@@ -1,0 +1,247 @@
+############################## mairadb installation
+vim /etc/yum.repos.d/MariaDB.repo
+
+# MariaDB 10.1 CentOS repository list - created 2016-08-29 02:53 UTC
+# http://downloads.mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.1/centos6-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+
+rpm -qa|grep mysql
+yum remove mysql mysql-server mysql-libs
+yum install MariaDB-server MariaDB-client
+
+swapon --summary
+iptables -L
+iptables -F
+chkconfig iptables off
+reboot
+
+############################## galera cluster master
+
+iptables -A INPUT -i eth1 -p tcp --dport 3306 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 4567 -j ACCEPT
+
+service mysql start
+
+/usr/bin/mysql_secure_installation
+
+#mysql -p'123qwe!@#'
+GRANT USAGE ON *.* to sst@'%' IDENTIFIED BY 'sstpass123';
+GRANT ALL PRIVILEGES on *.* to sst@'%';
+FLUSH PRIVILEGES;
+quit
+
+#mysql -p'123qwe!@#'
+CREATE USER 'root'@'%' IDENTIFIED BY 'mb123qwe';
+GRANT ALL on *.* to 'root'@'%' with grant option;
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'root'@'%';
+quit
+
+#vim /etc/my.cnf.d/server.cnf
+[mysqld]
+bind-address=0.0.0.0
+default_storage_engine=InnoDB
+innodb_autoinc_lock_mode=2
+
+wsrep_new_cluster
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
+wsrep_cluster_address="gcomm://"
+
+log_bin
+binlog_format=ROW
+wsrep_on=ON
+innodb_doublewrite=1
+#wsrep_sst_method=rsync
+#wsrep_sst_auth=sst:sstpass123
+
+#service mysql start --wsrep-new-cluster
+
+
+#service mysql restart
+
+#vim /var/lib/mysql/localhost.localdomain.err
+
+#netstat -tulpn |grep -e 4567 -e 3306
+#mysql -p'123qwe!@#' -e "SHOW STATUS LIKE 'wsrep_%';"
+#mysql -p'123qwe!@#' -e "SHOW VARIABLES LIKE 'wsrep_%';"
+
+#mysqld --verbose --help |grep -e wsrep-provider -e wsrep-cluster-address -e binlog-format -e default-storage-engine -e innodb-autoinc-lock-mode -e innodb-doublewrite -e wsrep-on -e bind-address
+
+
+################################ galera cluster slave1
+
+iptables -A INPUT -i eth1 -p tcp --dport 3306 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 4567 -j ACCEPT
+
+service mysql start
+
+/usr/bin/mysql_secure_installation
+
+#mysql -p'123qwe!@#'
+GRANT USAGE ON *.* to sst@'%' IDENTIFIED BY 'sstpass123';
+GRANT ALL PRIVILEGES on *.* to sst@'%';
+FLUSH PRIVILEGES;
+quit
+
+#vim /etc/my.cnf.d/server.cnf
+bind-address=0.0.0.0
+default_storage_engine=InnoDB
+innodb_autoinc_lock_mode=2
+
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
+wsrep_cluster_address="gcomm://192.168.21.243,192.168.21.246,192.168.21.247"
+
+log_bin
+binlog_format=ROW
+wsrep_on=ON
+innodb_doublewrite=1
+
+service mysql restart
+
+vim /var/lib/mysql/localhost.localdomain.err
+
+################################ mysqld_multi usage
+
+#service mysql start
+#/usr/bin/mysql_secure_installation
+
+###pass word mb123qwe
+#mysql -p'123qwe!@#'
+GRANT SHUTDOWN ON *.* TO 'multi_admin'@'localhost' IDENTIFIED BY 'multipass';
+GRANT USAGE ON *.* to sst@'%' IDENTIFIED BY 'sstpass123';
+GRANT ALL PRIVILEGES on *.* to sst@'%';
+FLUSH PRIVILEGES;
+quit;
+
+#mysqld --verbose --help|grep -e datadir -e pid-file -e user -e socket -e port
+#cp -a /var/lib/mysql /var/lib/mysql1
+#cp -a /var/lib/mysql /var/lib/mysql2
+#cp -a /var/lib/mysql /var/lib/mysql3
+
+#vim /etc/my.cnf.d/server.cnf
+[mysqld_multi]
+mysqld     = /usr/sbin/mysqld
+mysqladmin = /usr/bin/mysqladmin
+user       = multi_admin
+password   = multipass
+
+[mysqld]
+
+[mysqld1]
+user= mysql
+pid-file= /var/lib/mysql1/mysqld.pid
+socket= /var/lib/mysql1/mysqld.sock
+port= 3307
+datadir= /var/lib/mysql1
+
+[mysqld2]
+user= mysql
+pid-file= /var/lib/mysql2/mysqld.pid
+socket= /var/lib/mysql2/mysqld.sock
+port= 3308
+datadir= /var/lib/mysql2
+
+[mysqld3]
+user= mysql
+pid-file= /var/lib/mysql3/mysqld.pid
+socket= /var/lib/mysql3/mysqld.sock
+port= 3309
+datadir= /var/lib/mysql3
+
+#mysqld_multi report
+#mysqld_multi start
+#mysqld_multi stop 1,2,3
+#mysqld_multi report 1,2,3
+
+#mysql -P 3307 -p'123qwe!@#'
+
+#mysqld_multi stop
+
+#vim /etc/my.cnf.d/server.cnf
+
+[mysqld1]
+bind-address=0.0.0.0
+default_storage_engine=InnoDB
+innodb_autoinc_lock_mode=2
+#innodb_flush_log_at_trx_commit=0
+
+wsrep_new_cluster
+wsrep_cluster_address="gcomm://"
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
+wsrep_provider_options="gmcast.listen_addr=tcp://0.0.0.0:5671"
+log_bin
+binlog_format=ROW
+wsrep_on=ON
+innodb_doublewrite=1
+
+[mysqld2]
+bind-address=0.0.0.0
+default_storage_engine=InnoDB
+innodb_autoinc_lock_mode=2
+#innodb_flush_log_at_trx_commit=0
+
+wsrep_cluster_address="gcomm://192.168.122.101:5671,192.168.122.101:5672,192.168.122.101:5673"
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
+wsrep_provider_options="gmcast.listen_addr=tcp://0.0.0.0:5672"
+log_bin
+binlog_format=ROW
+wsrep_on=ON
+innodb_doublewrite=1
+
+[mysqld3]
+bind-address=0.0.0.0
+default_storage_engine=InnoDB
+innodb_autoinc_lock_mode=2
+#innodb_flush_log_at_trx_commit=0
+
+wsrep_cluster_address="gcomm://192.168.122.101:5671,192.168.122.101:5672,192.168.122.101:5673"
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
+wsrep_provider_options="gmcast.listen_addr=tcp://0.0.0.0:5673"
+log_bin
+binlog_format=ROW
+wsrep_on=ON
+innodb_doublewrite=1
+
+#mysqld_multi start
+#mysqld_multi report
+
+#cp /usr/share/mysql/mysqld_multi.server /etc/init.d/mysqld_multi
+#vim /etc/init.d/mysqld_multi
+basedir=/usr
+bindir=/usr/bin
+#chkconfig mysqld_multi on
+
+#mysql -P 3307 -p'123qwe!@#' -e "SHOW STATUS LIKE 'wsrep_%';"
+#mysql -P 3307 -p'123qwe!@#' -e "SHOW VARIABLES LIKE 'wsrep_%';"
+#mysql -S /var/lib/mysql1/mysqld.sock -p'123qwe!@#' -e "SHOW STATUS LIKE 'wsrep_%';"
+#mysql -S /var/lib/mysql1/mysqld.sock -p'123qwe!@#' -e "SHOW VARIABLES LIKE 'wsrep_%';"
+
+#mysql -S /var/lib/mysql1/mysqld.sock -p'123qwe!@#' -e "SHOW STATUS LIKE 'wsrep_local_state_comment';"
+#mysql -S /var/lib/mysql1/mysqld.sock -p'123qwe!@#' -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
+#mysql -S /var/lib/mysql1/mysqld.sock -p'123qwe!@#' -e "SHOW STATUS LIKE 'wsrep_ready';"
+
+################################ restart galera cluster
+
+#cat /var/lib/mysql1/grastate.dat
+
+################################ sysbench
+
+#sysbench --test=oltp --mysql-table-engine=innodb --mysql-host=192.168.21.243,192.168.21.246,192.168.21.247 --mysql-port=3306 --mysql-db=test --oltp-table-size=10000 --mysql-user=root --mysql-password=mb123qwe prepare
+
+#sysbench --num-threads=16 --test=oltp --mysql-table-engine=innodb --mysql-host=192.168.21.243,192.168.21.246,192.168.21.247 --mysql-port=3306 --mysql-db=test --oltp-table-size=10000 --mysql-user=root --mysql-password=mb123qwe run
+
+#sysbench --num-threads=16 --test=oltp --mysql-table-engine=innodb --mysql-host=192.168.21.243,192.168.21.246,192.168.21.247 --mysql-port=3306 --mysql-db=test --oltp-table-size=10000 --mysql-user=root --mysql-password=mb123qwe cleanup
+
+mysql -h 192.168.21.243 -u root -p'mb123qwe' test -e 'desc sbtest;'
+mysql -h 192.168.21.243 -u root -p'mb123qwe' test -e 'show create table sbtest\G;'
+mysql -h 192.168.21.243 -u root -p'mb123qwe' test -e 'select count(*) from sbtest;'
+
+#sysbench --test=oltp --mysql-table-engine=innodb --mysql-host=192.168.21.243 --mysql-port=3307 --mysql-db=test --oltp-table-size=10000 --mysql-user=root --mysql-password=mb123qwe prepare
+
+#sysbench --num-threads=16 --test=oltp --mysql-table-engine=innodb --mysql-host=192.168.21.243 --mysql-port=3307 --mysql-db=test --oltp-table-size=10000 --mysql-user=root --mysql-password=mb123qwe run
+
+#sysbench --num-threads=16 --test=oltp --mysql-table-engine=innodb --mysql-host=192.168.21.243 --mysql-port=3307 --mysql-db=test --oltp-table-size=10000 --mysql-user=root --mysql-password=mb123qwe cleanup

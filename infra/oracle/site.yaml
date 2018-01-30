@@ -1,0 +1,192 @@
+---
+#################### diagnose #######################
+- hosts: all
+  name: check hosts hareware
+  sudo: yes
+  gather_facts: no
+  tags:
+    - diagnose
+  tasks:
+    - name: check hosts hardware info
+      #debug: msg="lsb {{ ansible_lsb }}"
+      debug: msg="{{ inventory_hostname }} ,CPU cores {{ ansible_processor_cores }},CPU count {{ ansible_processor_count }}, disk size {{ ansible_devices.sda.size }}, mem mb {{ ansible_memtotal_mb }}, datetime {{ ansible_date_time.iso8601_micro }}, ni {{ ansible_interfaces }}, groups {{ group_names }}"
+
+#################### setup #######################
+- hosts: all
+  name: create os users
+  gather_facts: no
+  vars:
+    ansible_ssh_user: root
+    ansible_ssh_pass: "{{ root_pass }}"
+  tags:
+    - setup
+    - setup_user
+    - install_oracledb
+  tasks:
+    - name: create initial groups for the dev user
+      group: name=dev state=present
+
+    - name: create dev user
+      user:
+        name: dev
+        group: dev
+        home: /home/dev
+        shell: /bin/bash
+        # gjzspt@!@#
+        # mkpasswd --method=SHA-512
+        # hashed password for the dev user
+        # python -c 'import crypt; print crypt.crypt("gjzspt@!@#", "$1$salt$")'
+        password: "$1$salt$Q.mNVqoQheFEuefCuFMJI0"
+        append: yes
+
+- hosts: all
+  name: setup sudoers
+  gather_facts: no
+  tags:
+    - setup
+    - setup_user
+    - install_oracledb
+  vars:
+    ansible_ssh_user: root
+    ansible_ssh_pass: "{{ root_pass }}"
+    dev_sudoers:
+      - user: "dev"
+        user_commands:
+          - commands:
+              - "/bin/sh"
+              - "/usr/bin/yum"
+              - "/tmp/oracle/database/runInstaller"
+              - "/opt/app/oracle/product/11.2.0/oracle/bin/emctl"
+              - "/tmp/oracle/sqlplus_user_setup.sh"
+            nopasswd: false
+  roles:
+    - { role: mchlumsky.sudoersd, sudoers_filename: dev, sudoers: "{{ dev_sudoers }}" }
+
+
+- hosts: all
+  name: auto start sshd
+  gather_facts: no
+  vars:
+    ansible_ssh_user: root
+    ansible_ssh_pass: "{{ root_pass }}"
+  tags:
+    - setup
+    - setup_autostart_sshd
+    - install_oracledb
+  tasks:
+    - service: name=sshd enabled=yes
+
+- hosts: all
+  name: set hostname
+  gather_facts: no
+  tags:
+    - setup
+    - setup_set_hostname
+    - install_oracledb
+  vars:
+    ansible_ssh_user: root
+    ansible_ssh_pass: "{{ root_pass }}"
+  tasks:
+    - hostname: name={{ hostname }}
+
+- hosts: all
+  name: turn off firewall
+  gather_facts: no
+  tags:
+    - setup
+    - setup_off_iptables
+    - install_oracledb
+  vars:
+    ansible_ssh_user: root
+    ansible_ssh_pass: "{{ root_pass }}"
+  tasks:
+    - service: name=iptables state=stopped enabled=no
+
+#################### files #######################
+
+- hosts: all
+  name: upload installation files
+  gather_facts: no
+  vars:
+    ansible_ssh_user: dev
+    ansible_ssh_pass: "gjzspt@!@#"
+    ansible_sudo_pass: "gjzspt@!@#"
+  sudo: yes
+  tags:
+    - copy_files
+    - install_oracledb
+  tasks:
+    - name: copy files
+      copy:
+        src: /home/helong/he/infra/
+        dest: /root/dl/
+
+- hosts: all
+  name: upload jdk rpm file
+  gather_facts: no
+  tags:
+    - copy_files
+    - install_oracledb
+  sudo: yes
+  vars:
+    ansible_ssh_user: dev
+    ansible_ssh_pass: "gjzspt@!@#"
+    ansible_sudo_pass: "gjzspt@!@#"
+  tasks:
+    - name: copy rpm file
+      copy:
+        src: /home/helong/he/infra/java/jdk-8u91-linux-x64.rpm
+        dest: /tmp/jdk-8u91-linux-x64.rpm
+
+
+#################### install #######################
+- hosts: java8
+  name: install java8
+  gather_facts: yes
+  tags:
+    - install_java8
+    - install_oracledb
+  sudo: yes
+  vars:
+    ansible_ssh_user: dev
+    ansible_ssh_pass: "gjzspt@!@#"
+    ansible_sudo_pass: "gjzspt@!@#"
+    oracle_jdk_version: 8
+    oracle_jdk_update: 91
+    oracle_jdk_build_number: b14
+  roles:
+    - role: medzin.oracle-jdk
+
+- hosts: db
+  name: install oracle database server
+  gather_facts: yes
+  tags:
+    - install_oracledb
+  sudo: yes
+  vars:
+    ansible_ssh_user: dev
+    ansible_ssh_pass: "gjzspt@!@#"
+    ansible_sudo_pass: "gjzspt@!@#"
+    # oracle variables
+    oracle_path: /opt/app  # ORACLE_BASE will be /opt/app/oracle
+    oracle_tmp: /tmp/oracle
+    oracle_db_name: gjzs  # ORACLE_SID gjzsptm
+    oracle_db_home: oracle  # ORACLE_HOME will be /opt/app/oracle/product/11.2.0/oracle
+    oracle_db_user: dev
+    # alphanum or _ or $ or #
+    oracle_db_pass: "123456"
+    oracle_db_syspass: "Oe123qwe###"
+    install_files:
+      - linux.x64_11gR2_database_1of2.zip
+      - linux.x64_11gR2_database_2of2.zip
+  pre_tasks:
+    - name: create dir oracle tmp
+      file:
+        path: "{{ oracle_tmp }}"
+        state: directory
+    - name: copy installation files to oracle_tmp
+      command: /usr/bin/rsync /root/dl/oralce-rac/{{ item }} {{ oracle_tmp }}/{{ item }}
+      with_items: "{{ install_files }}"
+  roles:
+    - role: ellotheth.oracle
+

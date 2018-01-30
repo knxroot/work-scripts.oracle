@@ -1,0 +1,70 @@
+
+---
+# defaults for oracle installation
+
+# to be added to /etc/hosts
+oracle_hostname: oracle
+
+# location for temporary installation files
+oracle_tmp: /tmp/oracle
+
+#
+# oracle connection settings
+#
+
+# ORACLE_BASE parent, {{ oracle_path }}/oracle
+oracle_path: /opt/oracle_app
+
+# ORACLE_SID
+oracle_db_name: db
+
+# ORACLE_HOME basename, {{ oracle_path }}/oracle/product/11.2.0/{{ oracle_db_home }}
+oracle_db_home: oracle_db_home
+
+# initial db user
+oracle_db_user: oracle
+
+# password for the initial db user
+oracle_db_pass: OracleUs3r
+
+# password for the sysdba
+oracle_db_syspass: Oracle4dmin
+
+# system memory to allocate to the db server (40% total memory)
+oracle_db_mem: "{{ ( ansible_memtotal_mb * 10 ) // 25 }}"
+
+#
+# oracle system user
+#
+
+# oracle user username
+oracle_user: oracle
+
+# hashed password for the oracle user
+# python -c 'import crypt; print crypt.crypt("oracle", "$1$salt$")'
+oracle_pass: $1$salt$6hY7SFGTovD5BRJ.4zYAd1
+
+# primary oracle group
+oracle_group: oinstall
+
+# DBA group
+oracle_dba_group: dba
+
+#
+# oracle installer archives
+#
+
+# if you need to download the installer files, set the URI here
+oracle_installer_uri: http://oracle.installer.host
+
+# official oracle installer archives
+# source: http://www.oracle.com/technetwork/database/enterprise-edition/downloads/112010-linx8664soft-100572.html
+#
+# - if you already have these files, stick them at {{ oracle_tmp }}. ansible
+#   will automatically skip the downloading step.
+# - if you've already extracted everything, set the vars below to false. your
+#   extracted installer directory should be {{ oracle_tmp }}/database.
+oracle_installer1: linux.x64_11gR2_database_1of2.zip
+oracle_installer2: linux.x64_11gR2_database_2of2.zip
+oracle_checksum1: 3152418844
+oracle_checksum2: 3669256139

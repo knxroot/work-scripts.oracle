@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require './rb/ora'
+
+#svr249=Ora.new(dry_run:false,ip:"192.168.21.249",sys_password:"Oe123qwe###",instance_name:"gjzs")
+#svr249.test_conn()
+
+svr52d1=Ora.new(dry_run:false,ip:"10.0.52.1",sys_password:"oracle",instance_name:"orcl")
+svr52d1.test_conn()

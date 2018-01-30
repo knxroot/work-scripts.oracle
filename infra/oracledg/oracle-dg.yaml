@@ -1,0 +1,150 @@
+---
+- hosts: dg_masters
+  name: Preparing the Primary Database for Standby Database Creation
+  sudo: no
+  gather_facts: no
+  vars_files:
+    - "oradg/vars.yml"
+  tasks:
+    - name: create primary database prepare script
+      template:
+        src: oradg/prepare_primary.sh.j2
+        dest: "{{ oracle_tmp }}/prepare_primary.sh"
+        mode: 0755
+        owner: "{{ oracle_user }}"
+        group: "{{ oracle_group }}"
+    - name: run primary database prepare script
+      environment: 
+        ORACLE_BASE: "{{ oracle_base }}"
+        ORACLE_SID: "{{ pri_instance }}"
+        ORACLE_HOME: "{{ oracle_home }}"
+        NLS_LANG: "American_America.UTF8"
+      command: "{{ oracle_tmp }}/prepare_primary.sh"
+
+#- hosts: dg_masters
+#  name: Creating a Physical Standby Database
+#  sudo: yes
+#  gather_facts: no
+#  tasks:
+#    - name: Create a Backup Copy of the Primary Database Datafiles
+#    - name: Create a Control File for the Standby Database
+#    - name: Create a Parameter File for the Standby Database
+#    - name: Copy Files from the Primary System to the Standby System
+
+
+# - hosts: dg_physic_slaves
+#   name: Creating a Physical Standby Database
+#   sudo: yes
+#   gather_facts: no
+#   tasks:
+#     - name: Set Up the Environment to Support the Standby Database
+#     - name: Start the Physical Standby Database
+#     - name: Verify the Physical Standby Database Is Performing Properly
+
+#     - name: Creating an Initialization Parameter File and Starting the Auxiliary Instance
+#     - include: oradg/duplicate_primary.yml 
+#       vars:
+#         oracle_user: oracle
+#         oracle_group: oinstall
+#         oracle_tmp: '/tmp/oracle'
+#         oracle_base: '/opt/app/oracle'
+
+- hosts: dg_physic_slaves
+  name: Creating a Standby Database with Active Database Duplication
+  sudo: yes
+  gather_facts: no
+  vars_files:
+    - "/oradb/vars.yml"
+  tasks:
+    - block:
+      - name: create slave pfile
+        template:
+          src: oradg/init_slave.ora.j2
+          dest: "{{ oracle_home }}/dbs/init{{ slv_instance }}.ora"
+          mode: 0644
+          owner: "{{ oracle_user }}"
+          group: "{{ oracle_group }}"
+      # - name: startup slave instance
+      # - name: scp password file
+      # - name: setup listener.ora
+      # - name: setup tnsnames.ora
+      - name: create rman command file
+        template:
+          src: oradg/rman_dulicate.j2
+          dest: "{{ oracle_tmp }}/duplicate.rman"
+          mode: 0644
+          owner: "{{ oracle_user }}"
+          group: "{{ oracle_group }}"
+      - name: create rman shell file
+        template:
+          src: oradg/rman_dulicate.sh.j2
+          dest: "{{ oracle_tmp }}/rman_duplicate.sh"
+          mode: 0755
+          owner: "{{ oracle_user }}"
+          group: "{{ oracle_group }}"
+      - name: run rman duplicate script
+        environment: 
+          ORACLE_BASE: "{{ oracle_base }}"
+          ORACLE_HOME: "{{ oracle_home }}"
+          NLS_LANG: "American_America.UTF8"
+        command: "{{ oracle_tmp }}/rman_duplicate.sh"
+
+    # export ORACLE_HOME=/opt/app/oracle/product/11.2.0/oracle
+    # export ORACLE_SID=slave
+    # echo 'db_name=slave' > $ORACLE_HOME/dbs/initslave.ora
+    # sqlplus / as sysdba
+    # SQL>startup nomount
+    # SQL>exit
+
+    # cp $ORACLE_HOME/dbs/orapworclm $ORACLE_HOME/dbs/orapwslave
+
+    # vim $ORACLE_HOME/network/admin/listener.ora
+    # SID_LIST_listener=
+    # (SID_LIST=
+    #  (SID_DESC=
+    #   (GLOBAL_DBNAME=slave)
+    #   (SID_NAME=slave)
+    #   (ORACLE_HOME=/opt/app/oracle/product/11.2.0/oracle)))
+    # lsnrctl stop
+    # lsnrctl start
+    # lsnrctl status    
+
+    # vim $ORACLE_HOME/network/admin/tnsnames.ora
+    # SLAVE =
+    #   (DESCRIPTION =
+    #     (ADDRESS = (PROTOCOL = TCP)(HOST = dbserver)(PORT = 1521))
+    #     (CONNECT_DATA =
+    #       (SERVER = DEDICATED)
+    #       (SERVICE_NAME = slave)
+    #     )
+    #   )
+    # tnsping orclm
+    # tnsping slave
+
+    # sqlplus sys/Oe123qwe###@dbserver/orclm as sysdba
+    # sqlplus sys/Oe123qwe###@dbserver/slave as sysdba    
+
+    # rman target sys/Oe123qwe###@orclm auxiliary sys/Oe123qwe###@slave
+
+# - hosts: dg_logic_slaves
+#   name: Stop Redo Apply on the Physical Standby Database
+#   sudo: yes
+#   gather_facts: no
+#   tasks:
+#     - name: Stop Redo Apply on the Physical Standby Database
+
+# - hosts: dg_masters
+#   name: Prepare the Primary Database to Support a Logical Standby Database
+#   sudo: yes
+#   gather_facts: no
+#   tasks:
+#     - name: Prepare the Primary Database to Support a Logical Standby Database
+
+# - hosts: dg_logic_slaves
+#   name: Stop Redo Apply on the Physical Standby Database
+#   sudo: yes
+#   gather_facts: no
+#   tasks:
+#     - name: Transition to a Logical Standby Database
+#     - name: Open the Logical Standby Database
+#     - name: Verify the Logical Standby Database Is Performing Properly

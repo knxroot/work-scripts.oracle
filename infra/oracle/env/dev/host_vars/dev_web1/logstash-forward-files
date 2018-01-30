@@ -1,0 +1,9 @@
+logstash_forwarder_files:
+  - paths:
+      - /data/webapp/tcqx/apache-tomcat-7.0.53/logs/agri-web.log
+    fields:
+      type: tcnx
+  - paths:
+      - /data/webapp/tcqx/apache-tomcat-7.0.53/logs/catalina.out
+    fields:
+      type: tcnx

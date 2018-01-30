@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Using ddlutils" default="database-dump">
+
+	<path id="runtime-classpath">
+	  <fileset dir="lib">
+	    <include name="**/*.jar"/>
+	    <include name="**/*.zip"/>
+	  </fileset>
+	</path>
+
+	<target name="database2files" description="Dumps the database structure">
+	  <taskdef name="databaseToDdl"
+		   classname="org.apache.ddlutils.task.DatabaseToDdlTask">
+	    <classpath refid="runtime-classpath"/>
+	  </taskdef>
+
+	  <databaseToDdl>
+	    <database url="jdbc:mysql://192.168.21.246:3306/mdata?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true&amp;serverTimezone=PRC&amp;useSSL=false"
+		    driverClassName="com.mysql.jdbc.Driver"
+		      username="root"
+		      password="mb123qwe"/>
+
+	    <writeSchemaToFile outputFile="db-schema.xml"/>
+	    <writeDataToFile outputFile="data.xml"/>
+	  </databaseToDdl>
+	</target>
+
+	<target name="schemafile2database"
+		description="Creates the database structure">
+	  <taskdef name="ddlToDatabase"
+		   classname="org.apache.ddlutils.task.DdlToDatabaseTask">
+	    <classpath refid="runtime-classpath"/>
+	  </taskdef>
+
+	  <ddlToDatabase>
+	    <database url="jdbc:oracle:thin:@192.168.21.243:1521:orcl"
+		      driverClassName="oracle.jdbc.driver.OracleDriver"
+		      username="dgap_pre"
+		      password="12345678"/>
+	    <fileset dir=".">
+	      <include name="mdata-schema.xml"/>
+	    </fileset>
+	<!--
+	    <writeSchemaToDatabase alterdatabase="true"/> 
+	-->
+	    <writeSchemaToDatabase alterdatabase="false" dodrops="false"/> 
+	  </ddlToDatabase>
+	</target>
+
+	<target name="schemafile2sql"
+		description="Creates the database structure">
+	  <taskdef name="ddlToDatabase"
+		   classname="org.apache.ddlutils.task.DdlToDatabaseTask">
+	    <classpath refid="runtime-classpath"/>
+	  </taskdef>
+
+	  <ddlToDatabase>
+	    <database url="jdbc:oracle:thin:@192.168.21.243:1521:orcl"
+		      driverClassName="oracle.jdbc.driver.OracleDriver"
+		      username="dgap_pre"
+		      password="12345678"/>
+	    <fileset dir=".">
+	      <include name="mdata-schema.xml"/>
+	    </fileset>
+	    <writeSchemaSqlToFile alterdatabase="false" dodrops="false" outputfile="schema.sql"/> 
+	  </ddlToDatabase>
+	</target>
+
+	<target name="datafile2database"
+		description="Inserts data into the database">
+	  <taskdef name="ddlToDatabase"
+		   classname="org.apache.ddlutils.task.DdlToDatabaseTask">
+	    <classpath refid="runtime-classpath"/>
+	  </taskdef>
+
+	  <ddlToDatabase>
+	    <database url="jdbc:oracle:thin:@192.168.21.243:1521:orcl"
+		      driverClassName="oracle.jdbc.driver.OracleDriver"
+		      username="dgap_pre"
+		      password="12345678"/>
+	    <fileset dir=".">
+	      <include name="mdata-schema.xml"/>
+	    </fileset>
+	<!--
+	    <createDatabase failonerror="false"/>
+	-->
+	    <writeDataToDatabase datafile="data.xml"/> 
+	  </ddlToDatabase>
+	</target>
+
+</project>

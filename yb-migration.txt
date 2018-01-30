@@ -1,0 +1,18 @@
+[10.0.53.139] Executing task '_exp'
+-------------------------------
+env NLS_LANG=AMERICAN_AMERICA.UTF8 exp userid=system/Oe123qwe### owner=sofn_sx  ROWS=Y file=~/backup_sofn_sx_20170803_09:24.dmp
+get(~/backup_sofn_sx_20170803_09:24.dmp,./dmpfiles/dev_sofn_sx_20170803_wd.dmp)
+./dmpfiles/dev_sofn_sx_20170803_wd.dmp
+[106.14.196.8] Executing task '_createdb'
+-------------------------------
+env ORACLE_SID=orcl sqlplus / as sysdba <<-'EOI' 
+CREATE USER sofn_sx IDENTIFIED BY sofn_sx;
+GRANT CONNECT TO sofn_sx;
+GRANT RESOURCE TO sofn_sx;
+EOI
+[106.14.196.8] Executing task '_imp_with_localfile'
+put(./dmpfiles/dev_sofn_sx_20170803_wd.dmp,~/dev_sofn_sx_20170803_wd.dmp)
+-------------------------------
+env NLS_LANG=AMERICAN_AMERICA.UTF8 imp userid=system/Gjzspt630 fromuser=sofn_sx touser=sofn_sx IGNORE=Y ROWS=Y file=~/dev_sofn_sx_20170803_wd.dmp
+
+Done.

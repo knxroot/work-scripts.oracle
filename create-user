@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require './rb/ora'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opt|
+	opt.on('-d','--dryrun') { |o| options[:dryrun] = o }
+end.parse!
+
+if options[:dryrun]
+	svr52d1=Ora.new(dry_run:true,ip:"10.0.52.1",sys_password:"oracle",instance_name:"orcl")
+else
+	svr52d1=Ora.new(dry_run:false,ip:"10.0.52.1",sys_password:"oracle",instance_name:"orcl")
+end
+
+svr249=Ora.new(dry_run:false,ip:"192.168.21.249",sys_password:"Oe123qwe###",instance_name:"gjzs")
+#svr249.test_conn()
+svr249.create_schema "gjzspt_exp","12345678"
+#svr52d1.create_schema "gjzspt","12345678"
+#svr52d1.create_schema "dgap_pre","12345678"
+#svr52d1.create_schema "dgap_dw","12345678"

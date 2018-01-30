@@ -1,0 +1,73 @@
+#####################
+# CentOS
+- include: centos.yml
+  when: ansible_distribution == 'CentOS'
+
+#####################
+# Ubuntu
+- include: ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+#####################
+# Debian
+- include: debian.yml
+  when: ansible_distribution == 'Debian'
+
+- name: "Make sure the zookeeper group exists"
+  group: >
+    name=zookeeper
+    state=present
+    system=yes
+  tags:
+    - zookeeper
+    - users
+
+- name: "Make sure that the zookeeper user is in the zookeeper group"
+  user: >
+    name=zookeeper
+    groups=zookeeper
+    append=yes
+  tags:
+    - zookeeper
+    - users
+
+- name: "Copy the configuration file for ZooKeeper"
+  template: >
+    src=zoo.cfg.j2
+    dest=/etc/zookeeper/conf/zoo.cfg
+    mode=640
+    owner=root
+    group=zookeeper
+  notify: Restart ZooKeeper
+  tags:
+    - zookeeper
+    - files
+    - configs
+
+- name: "Initialize ZooKeeper"
+  template: >
+    src=myid.j2
+    dest=/var/lib/zookeeper/myid
+    owner=zookeeper
+  tags:
+    - zookeeper
+    - configs
+    - files
+
+- name: "Ensure /var/log/zookeeper is present"
+  file: >
+    path=/var/log/zookeeper
+    state=directory
+  tags:
+    - zookeeper
+    - files
+
+- name: "Make sure ZooKeeper is running"
+  service: >
+    name={{ zookeeper_initd_script }}
+    state=running
+    enabled=yes
+    runlevel=5
+  tags:
+    - zookeeper
+    - services

@@ -1,0 +1,93 @@
+---
+#################### files #######################
+
+- hosts: all
+  name: upload installation files
+  gather_facts: no
+  vars:
+    ansible_ssh_user: dev
+    ansible_ssh_pass: "gjzspt@!@#"
+    ansible_sudo_pass: "gjzspt@!@#"
+  sudo: yes
+  tags:
+    - copy_files
+    - install_oracledb
+  tasks:
+    - name: copy files
+      copy:
+        src: /home/helong/he/infra/
+        dest: /root/dl/
+
+- hosts: all
+  name: upload jdk rpm file
+  gather_facts: no
+  tags:
+    - copy_files
+    - install_oracledb
+  sudo: yes
+  vars:
+    ansible_ssh_user: dev
+    ansible_ssh_pass: "gjzspt@!@#"
+    ansible_sudo_pass: "gjzspt@!@#"
+  tasks:
+    - name: copy rpm file
+      copy:
+        src: /home/helong/he/infra/java/jdk-8u91-linux-x64.rpm
+        dest: /tmp/jdk-8u91-linux-x64.rpm
+
+
+#################### install #######################
+- hosts: java8
+  name: install java8
+  gather_facts: yes
+  tags:
+    - install_java8
+    - install_oracledb
+  sudo: yes
+  vars:
+    ansible_ssh_user: dev
+    ansible_ssh_pass: "gjzspt@!@#"
+    ansible_sudo_pass: "gjzspt@!@#"
+    oracle_jdk_version: 8
+    oracle_jdk_update: 91
+    oracle_jdk_build_number: b14
+  roles:
+    - role: medzin.oracle-jdk
+
+- hosts: db
+  name: install oracle database server
+  gather_facts: yes
+  tags:
+    - install_oracledb
+  sudo: yes
+  vars:
+    ansible_ssh_user: dev
+    ansible_ssh_pass: "gjzspt@!@#"
+    ansible_sudo_pass: "gjzspt@!@#"
+    # oracle variables
+    oracle_path: /opt/app  # ORACLE_BASE will be /opt/app/oracle
+    oracle_tmp: /tmp/oracle
+    oracle_db_name: gjzs  # ORACLE_SID gjzsptm
+    oracle_db_home: oracle  # ORACLE_HOME will be /opt/app/oracle/product/11.2.0/oracle
+    oracle_db_user: dev
+    # alphanum or _ or $ or #
+    oracle_db_pass: "123456"
+    oracle_db_syspass: "Oe123qwe###"
+    install_files:
+      - linux.x64_11gR2_database_1of2.zip
+      - linux.x64_11gR2_database_2of2.zip
+  pre_tasks:
+    - name: create dir oracle tmp
+      file:
+        path: "{{ oracle_tmp }}"
+        state: directory
+    - name: copy installation files to oracle_tmp
+      command: /usr/bin/rsync /root/dl/oralce-rac/{{ item }} {{ oracle_tmp }}/{{ item }}
+      with_items: "{{ install_files }}"
+  roles:
+    - role: ellotheth.oracle
+
+#sqlplus sys/Oe123qwe###@gjzsptm as sysdba
+#sqlplus64 sys/Oe123qwe###@//192.168.21.243:1521/gjzsptm as sysdba
+#sqlplus64 dev/123456@//192.168.21.243:1521/gjzsptm
+#http://192.168.21.243:1158/em

@@ -1,0 +1,20 @@
+task default: "verify_rac"
+
+task :help do
+	puts "help"
+end
+
+task :verify_rac do
+	sqlplus "sys","oracle","10.0.52.1","1521","orcl","select * from dual;"
+end
+
+def sqlplus(user,password,ip,port,servicename,sql)
+	asrole=" as sysdba" if user == "sys"
+	run "sqlplus64 #{user}/#{password}@'(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=#{ip})(PORT=#{port}))(CONNECT_DATA=(SERVICE_NAME=#{servicename})))'#{asrole} <<< '#{sql}'"
+end
+
+def run(cmd)
+	puts cmd
+	#system "/usr/bash" "-c" cmd
+	system "/usr/bash -c #{cmd}"
+end

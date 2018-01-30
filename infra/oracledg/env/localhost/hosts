@@ -1,0 +1,40 @@
+# 172.16.0.100 as jump server
+
+[centos6.4]
+192.168.100.64
+192.168.100.164
+
+[nginx]
+192.168.100.64
+
+[cache]
+192.168.100.64
+
+[java7]
+192.168.100.164
+
+[java8]
+192.168.100.64
+192.168.122.109
+
+[appserver]
+192.168.100.64
+
+[zookeeper]
+192.168.100.64
+
+[db]
+# 192.168.100.64
+#192.168.122.109
+172.16.7.178 hostname=dbm
+172.16.7.178 hostname=dbs1
+
+[code]
+
+[dg_masters]
+localhost
+
+[all:vars]
+ansible_user=he
+ansible_pass="123qwe!@#"
+root_pass="123qwe!@#"

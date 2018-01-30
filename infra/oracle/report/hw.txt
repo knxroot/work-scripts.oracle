@@ -1,0 +1,15 @@
+System 192.168.21.249, groups [u'cache'] ,CPU count 1, disk size 200.00 GB, mem mb 5693, datetime 2016-07-18T09:13:50.886764Z, ni [u'lo', u'eth1']"
+
+System 192.168.21.247, groups [u'zookeeper', u'service'] ,CPU count 1, disk size 200.00 GB, mem mb 7857, datetime 2016-07-18T09:16:26.187857Z, ni [u'lo', u'eth2', u'eth1']"
+
+System 192.168.21.246, groups [u'zookeeper'] ,CPU count 1, disk size 200.00 GB, mem mb 7857, datetime 2016-07-18T09:16:35.824893Z, ni [u'lo', u'eth1']"
+
+System 192.168.21.245, groups [u'db'] ,CPU count 1, disk size 700.00 GB, mem mb 2872, datetime 2016-07-18T09:16:17.442935Z, ni [u'lo', u'eth0']"
+
+System 192.168.21.244, groups [u'db'] ,CPU count 1, disk size 600.00 GB, mem mb 7858, datetime 2016-07-18T09:16:02.140097Z, ni [u'lo', u'eth0']"
+
+System 192.168.21.248, groups [u'appserver', u'zookeeper'] ,CPU count 1, disk size 200.00 GB, mem mb 5693, datetime 2016-07-18T09:13:44.064123Z, ni [u'lo', u'eth1']"
+
+System 172.16.0.100, groups [u'nginx'] ,CPU count 1, disk size 200.00 GB, mem mb 7857, datetime 2016-07-18T09:16:29.936799Z, ni [u'lo', u'eth0']"
+
+System 192.168.21.243, groups [u'code'] ,CPU count 1, disk size 1.46 TB, mem mb 9059, datetime 2016-07-18T09:16:37.577102Z, ni [u'lo', u'eth0']"

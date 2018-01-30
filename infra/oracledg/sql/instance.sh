@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#sqlplus64 'dev/123456@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.21.244)(PORT=1521))(CONNECT_DATA=(SID=gjzsptm)(SERVER=DEDICATED))))' <<EOF
+#sqlplus64 sys/Oe123qwe###@//192.168.21.244:1521/gjzsptm as sysdba <<EOF
+#sqlplus64 dev/123456@//192.168.21.244:1521/STANDBY <<EOF
+sqlplus64 sys/Oe123qwe###@//192.168.21.244:1521/STANDBY as sysdba <<EOF
+select INSTANCE_NAME,STATUS
+from V$INSTANCE
+EOF

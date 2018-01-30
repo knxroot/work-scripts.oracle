@@ -1,0 +1,10 @@
+logstash_forwarder_files:
+  - paths:
+      - /data/service/tcqx-content/dist/logs/tcqx-dubbo-1.0.log
+      - /data/service/tcqx-dubbo/dist/logs/tcqx-dubbo-1.0.log
+    fields:
+      type: tcqx
+  - paths:
+      - /data/service/agriculture-center/dist/logs/agri-center.log
+    fields:
+      type: tcnx

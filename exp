@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require './rb/db'
+
+options = {}
+OptionParser.new do |opt|
+	opt.on('-d','--dryrun') { |o| options[:dryrun] = o }
+end.parse!
+
+if options[:dryrun]
+	db = Db.new(true,true)
+else
+	db = Db.new(false,true)
+end
+
+db.exp "192.168.21.249","oracle","oracle","Oe123qwe###","gjzspt","./dmpfiles"

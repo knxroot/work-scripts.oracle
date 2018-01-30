@@ -1,0 +1,29 @@
+#  run {
+#  DUPLICATE TARGET DATABASE
+#    FOR STANDBY
+#    FROM ACTIVE DATABASE
+#    DORECOVER
+#    SPFILE
+#        SET db_file_name_convert '/opt/app/oracle/oradata/orclm/','/opt/app/oracle/oradata/slave/'
+#        SET log_file_name_convert '/opt/app/oracle/oradata/orclm/','/opt/app/oracle/oradata/slave/'
+#        SET "db_unique_name" "slave"
+#        SET LOG_ARCHIVE_DEST_1 "LOCATION = USE_DB_RECOVERY_FILE_DEST valid_for=(all_logfiles,all_roles) db_unique_name=slave"
+#        SET LOG_ARCHIVE_DEST_2 "service=orclm ASYNC REGISTER VALID_FOR=(online_logfile,primary_role)"
+#        SET FAL_SERVER "orclm"
+#    NOFILENAMECHECK;
+#  }
+
+run {
+DUPLICATE TARGET DATABASE
+  FOR STANDBY
+  FROM ACTIVE DATABASE
+  DORECOVER
+  SPFILE
+      SET db_file_name_convert '/opt/app/oracle/oradata/{{ pri_instance }}/','/opt/app/oracle/oradata/{{ slv_instance }}/'
+      SET log_file_name_convert '/opt/app/oracle/oradata/{{ pri_instance }}/','/opt/app/oracle/oradata/{{ slv_instance }}/'
+      SET "db_unique_name" "{{ slv_instance }}"
+      SET LOG_ARCHIVE_DEST_1 "LOCATION = USE_DB_RECOVERY_FILE_DEST valid_for=(all_logfiles,all_roles) db_unique_name={{ slv_instance }}"
+      SET LOG_ARCHIVE_DEST_2 "service={{ pri_instance }} ASYNC REGISTER VALID_FOR=(online_logfile,primary_role)"
+      SET FAL_SERVER "{{ pri_instance }}"
+  NOFILENAMECHECK;
+}

@@ -1,0 +1,22 @@
+---
+- name: download oracle-jdk tar.gz
+  get_url:
+    url: "{{ oracle_jdk_tar_download_source_url }}"
+    headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
+    dest: /tmp/{{ oracle_jdk_tar_download_filename }}
+
+- name: create jdk opt directory
+  file: path=/opt/oracle-jdk state=directory
+
+- name: unarchive java tar
+  unarchive:
+    src: /tmp/{{ oracle_jdk_tar_download_filename }}
+    dest: /opt/oracle-jdk
+    copy: no
+    creates: /opt/oracle-jdk/jdk1.{{ oracle_jdk_version }}.0_{{ oracle_jdk_update }}
+
+- name: correct java version selected
+  alternatives:
+    name: java
+    path: /opt/oracle-jdk/jdk1.{{ oracle_jdk_version }}.0_{{ oracle_jdk_update }}/jre/bin/java
+    link: /usr/bin/java

@@ -1,0 +1,12 @@
+---
+oracle_jdk_version: 8
+oracle_jdk_update: 74
+oracle_jdk_build_number: b02
+
+# RedHat family specific variables
+oracle_jdk_rpm_download_filename: jdk-{{ oracle_jdk_version }}u{{ oracle_jdk_update }}-linux-x64.rpm
+oracle_jdk_rpm_download_source_url: http://download.oracle.com/otn-pub/java/jdk/{{ oracle_jdk_version }}u{{ oracle_jdk_update }}-{{ oracle_jdk_build_number }}/{{ oracle_jdk_rpm_download_filename }}
+
+# Debian family specific variables
+oracle_jdk_tar_download_filename: jdk-{{ oracle_jdk_version }}u{{ oracle_jdk_update }}-linux-x64.tar.gz
+oracle_jdk_tar_download_source_url: http://download.oracle.com/otn-pub/java/jdk/{{ oracle_jdk_version }}u{{ oracle_jdk_update }}-{{ oracle_jdk_build_number }}/{{ oracle_jdk_tar_download_filename }}

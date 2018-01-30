@@ -1,0 +1,24 @@
+---
+sudo: required
+
+services:
+  - docker
+
+env:
+  - distribution: centos
+    version: 6
+  - distribution: centos
+    version: 7
+  - distribution: debian
+    version: jessie
+  - distribution: ubuntu
+    version: trusty
+
+before_install:
+  - 'sudo docker build --rm=true --tag=${distribution}-${version}-tests -f ./tests/docker/${distribution}/${version}/Dockerfile .'
+
+script:
+  - docker run -it ${distribution}-${version}-tests
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

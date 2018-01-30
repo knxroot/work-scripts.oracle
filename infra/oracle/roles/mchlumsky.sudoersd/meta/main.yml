@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Martin Chlumsky
+  description: /etc/sudoers.d management role
+  license: BSD
+  min_ansible_version: 1.9
+  platforms:
+  - name: EL
+    versions:
+    - 6
+    - 7
+  - name: Fedora
+    versions:
+    - 22
+  categories:
+  - system
+dependencies: []

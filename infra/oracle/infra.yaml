@@ -1,0 +1,64 @@
+files:
+  - \\192.168.21.251\e$\离职备份库\代一菱离职备份2016101
+
+oracle-servers:
+  dev-server:
+    ip: 192.168.21.249
+    users:
+      sys: Oe123qwe###
+      dbops: 1234qwer #used to create tables
+      gjzspt: 12345678 #dev account
+      qatest: 12345678 #qa account
+    instance: gjzs
+    schema: gjzspt
+  #dg-master:
+  #dg-slave:
+
+
+mysql-servers:
+  galera-masters:
+    ip: [192.168.21.246,192.168.21.247,192.168.21.243]
+    users:
+      root: mb123qwe
+      sst: sstpass123
+  slaves:
+    ip: [192.168.21.248,192.168.21.249,192.168.21.241]
+    users:
+      root: 1234abcd
+      repluser: 1234abcd
+
+
+servers:
+  users:
+    root: sofn@123
+    dev: gjzspt@!@#
+  hosts:
+    - ip: 192.168.21.251
+      desc: department physical server
+      users:
+        administrator: sn123qwe!@#
+    - ip: 192.168.21.243
+      desc: oracle dg master
+      users:
+        oracle: oracle
+    - ip: 192.168.21.241
+      desc: oracle dg slave
+      users:
+        oracle: oracle
+
+svn:
+  username: hel
+  passwd: hel721
+  codes:
+    baseurl: https://192.168.21.251/svn/CodeRepository/GuoJiaZhuiSuPingTai
+    paths:
+      - /BusinessSystem/sofn-server/sofn-common
+      - /BusinessSystem/sofn-server/sofn-generator
+      - /BusinessSystem/sofn-server/sofn-sso-api
+      - /BusinessSystem/sofn-server/sofn-dgap-service
+      - /BusinessSystem/sofn-server/sofn-dgap-api
+      - /BusinessSystem/sofn-server/sofn-dgap-pre
+      - /BusinessSystem/sofn-server/sofn-dgap-web
+  urls:
+    前端开发工具: https://192.168.21.251/svn/03-工具库/开发软件统一安装目录/Q 前端开发工具/webstorm.rar
+    前端框架: https://192.168.21.251:443/svn/CodeRepository/GuoJiaZhuiSuPingTai/BusinessSystem/soft-webfont

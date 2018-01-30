@@ -1,0 +1,102 @@
+---
+
+#
+# Create base domain (default domain)
+#
+
+- name: Copy create-domain WLST script
+  template:
+    src: create-domain.py.j2
+    dest: "{{ weblogic.scripts_dir }}/create-domain.py"
+    owner: "{{ oracle.user }}"
+    group: "{{ oracle.group }}"
+    mode: 0750
+
+- name: Execute create domain script
+  shell: "{{ oracle.middleware_dir }}/oracle_common/common/bin/wlst.sh {{ weblogic.scripts_dir }}/create-domain.py > {{ weblogic.logs_dir }}/create_domain_{{ weblogic_domain_name }}_$(date +'%F').log 2>&1"
+
+#
+# Configure the Nodemanager and the AdminServer
+#
+
+- name: Update 'JAVA_OPTIONS' variable within startNodeManager script
+  lineinfile:
+    dest: "{{ weblogic_domain_home }}/bin/startNodeManager.sh"
+    regexp: '^JAVA_OPTIONS='
+    line: 'JAVA_OPTIONS="${JAVA_OPTIONS} -Djava.security.egd=file:///dev/urandom -Dweblogic.RootDirectory=${DOMAIN_HOME}"'
+
+- name: Create a domain's security subdirectory
+  file:
+    path:  "{{ weblogic_domain_home }}/servers/AdminServer/security"
+    owner: "{{ oracle.user }}"
+    group: "{{ oracle.group }}"
+    state: directory
+
+- name: Copy AdminServer and Nodemanager properties files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ oracle.user }}"
+    group: "{{ oracle.group }}"
+  with_items:
+    - { src: boot.properties.j2, dest: "{{ weblogic_domain_home }}/servers/AdminServer/security/boot.properties" }
+    - { src: nodemanager.properties.j2, dest: "{{ weblogic_nodemanager_home }}/nodemanager.properties" }
+
+- name: Copy 'setUserOverrides.sh' script
+  copy:
+    src: setUserOverrides.sh
+    dest: "{{ weblogic_domain_home }}/bin/setUserOverrides.sh"
+    owner: "{{ oracle.user }}"
+    group: "{{ oracle.group }}"
+    mode: 0750
+
+- name: Copy Nodemanager systemd script
+  template:
+    src: nodemanager.service.j2
+    dest: /etc/systemd/system/nodemanager.service
+    mode: 0664
+  become: yes
+  become_user: root
+
+#
+# Start the Nodemanager and the AdminServer
+#
+
+- name: Enable and start Nodemanager service
+  service:
+    name: nodemanager
+    enabled: yes
+    state: started
+  become: yes
+  become_user: root
+
+- name: Wait for Nodemanager to startup
+  wait_for:
+    port: "{{ weblogic.nodemanager_listen_port }}"
+    delay: 2
+    timeout: 30
+  ignore_errors: yes
+
+- name: Copy AdminServer startup script
+  template:
+    src: start-admin-server.py.j2
+    dest: "{{ weblogic.scripts_dir }}/start-admin-server.py"
+    owner: "{{ oracle.user }}"
+    group: "{{ oracle.group }}"
+    mode: 0750
+
+- name: Check if AdminServer is already started
+  shell: "pgrep -a java -u {{ oracle.user }} | egrep 'Dweblogic.Name=AdminServer.*weblogic.Server$'"
+  register: check_adminserver
+  ignore_errors: yes
+
+- name: Execute AdminServer startup script
+  shell: "nohup {{ oracle.middleware_dir }}/oracle_common/common/bin/wlst.sh {{ weblogic.scripts_dir }}/start-admin-server.py > {{ weblogic.logs_dir }}/start_AdminServer_base_domain_$(date +'%F').log 2>&1 &"
+  when: check_adminserver.rc != 0
+
+- name: Wait for AdminServer to startup
+  wait_for:
+    port: "{{ weblogic.adminserver_listen_port }}"
+    delay: 4
+    timeout: 30
+  ignore_errors: yes

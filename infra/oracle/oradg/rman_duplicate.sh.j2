@@ -1,0 +1,11 @@
+#!/bin/sh
+# {{ ansible_managed }}
+
+# rman target sys/Oe123qwe###@orclm auxiliary sys/Oe123qwe###@slave
+
+rman target sys/Oe123qwe###@{{ pri_instance }} auxiliary sys/Oe123qwe###@{{ slv_instance }} log {{ oracle_tmp }}/rman.log append<<EOT
+SPOOL LOG to '{{ oracle_tmp }}/duplicate.rman.log'
+@{{ oracle_tmp }}/duplicate.rman
+SPOOL LOG OFF;
+exit;
+EOT

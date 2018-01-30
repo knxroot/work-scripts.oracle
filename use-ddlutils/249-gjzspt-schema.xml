@@ -1,0 +1,505 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<database xmlns="http://db.apache.org/ddlutils/schema/1.1" name="unnamed">
+  <table name="T_DGAP_ALERT_CONFIG" description="配置需要监控的预警项，包括预警目标、类型、状态等内容">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="ALERT_TYPE" primaryKey="false" required="true" type="VARCHAR" size="20" default="NULL" autoIncrement="false" description="非空，无默认值" />
+    <column name="TARGET_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="DESCRIPTION" primaryKey="false" required="true" type="VARCHAR" size="100" autoIncrement="false" description="非空，无默认值" />
+    <column name="THRESHOLD" primaryKey="false" required="true" type="INTEGER" size="22" autoIncrement="false" description="非空，无默认值" />
+    <column name="NEED_SEND_ALERT" primaryKey="false" required="false" type="VARCHAR" size="1" default="Y" autoIncrement="false" description="非空，默认值为Y （可填的Y或者N）" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_ALERT_LOG" description="记录预警日志">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="ALERT_CONFIG_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;预警配置表外键&#xa;" />
+    <column name="TARGET_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源表外键&#xa;" />
+    <column name="DESCRIPTION" primaryKey="false" required="true" type="VARCHAR" size="100" autoIncrement="false" description="非空，无默认值" />
+    <column name="ALERT_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false" description="非空，无默认值" />
+    <column name="SOLVE_DATE" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false" description="可为空" />
+    <column name="SOLVE_USER_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="可为空" />
+    <column name="SOLVE_STATUS" primaryKey="false" required="false" type="VARCHAR" size="10" autoIncrement="false" description="可为空" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_ALERT_RECEIPT" description="预警配置全部接收者的表">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空无默认值" />
+    <column name="ALERT_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;预警配置表外键&#xa;" />
+    <column name="RECEIPT_BY" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空无默认值" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_DATA_IMPORT_FIELD" description="用于存放表中的所有字段的中文名和英文名">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="ID" />
+    <column name="CHINESE_NAME" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false" description="中文字段名" />
+    <column name="ENGLISH_NAME" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false" description="英文字段名" />
+    <column name="TYPE" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="字段类型" />
+    <column name="LEN" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="字段长度" />
+    <column name="DATA_IMPORT_TABLE_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="对应表ID" />
+    <column name="CREATE_BY" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段1" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段2" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段3" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段4" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段5" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段6" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段7" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段8" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段9" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段10" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段11" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段12" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段13" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段14" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段15" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段16" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段17" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段18" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段19" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段20" />
+    <column name="STATUS" primaryKey="false" required="false" type="VARCHAR" size="10" autoIncrement="false" description="字段创建状态" />
+  </table>
+  <table name="T_DGAP_DATA_IMPORT_TABLE" description="用与存放库中的所有表的中文表名和英文表名">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="ID" />
+    <column name="CHINESE_NAME" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false" description="中文表名" />
+    <column name="ENGLISH_NAME" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false" description="英文表名" />
+    <column name="RESOURCE_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="资源ID" />
+    <column name="STATUS" primaryKey="false" required="false" type="VARCHAR" size="10" autoIncrement="false" description="'NE':表不存在，'AE':表存在" />
+    <column name="CREATE_BY" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段1" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段2" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段3" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段4" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段5" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段6" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段7" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段8" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段9" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段10" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段11" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段12" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段13" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段14" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段15" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段16" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段17" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段18" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段19" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="预留字段20" />
+  </table>
+  <table name="T_DGAP_LOCAL_PLATFORM_APPLI" description="地方平台申请审核表">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="ID" />
+    <column name="PLATFORM_NAME" primaryKey="false" required="true" type="VARCHAR" size="500" autoIncrement="false" description="平台名称" />
+    <column name="PLATFORM_AREA_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="平台所属区域" />
+    <column name="PLATFORM_LEVEL" primaryKey="false" required="true" type="VARCHAR" size="50" autoIncrement="false" description="平台级别，可选值（PROVINCE,CITY,COUNTY）" />
+    <column name="INDUSTRY" primaryKey="false" required="true" type="VARCHAR" size="50" autoIncrement="false" description="平台行业，可选值（AGRICUTURE,HUSBANDRY,AQUACULTURE）" />
+    <column name="URL" primaryKey="false" required="true" type="VARCHAR" size="500" autoIncrement="false" description="平台网址" />
+    <column name="NOTE" primaryKey="false" required="false" type="VARCHAR" size="500" autoIncrement="false" description="备注" />
+    <column name="APPLICANT" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="申请人" />
+    <column name="APPLICATION_TIME" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false" description="申请时间" />
+    <column name="APPLICATION_DEPARTMENT" primaryKey="false" required="false" type="VARCHAR" size="500" autoIncrement="false" description="申请单位" />
+    <column name="AUDIT_USER_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="审核人" />
+    <column name="AUDIT_TIME" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false" description="审核时间" />
+    <column name="AUDIT_COMMENTS" primaryKey="false" required="false" type="VARCHAR" size="500" autoIncrement="false" description="审核意见" />
+    <column name="STATUS" primaryKey="false" required="true" type="VARCHAR" size="50" autoIncrement="false" description="状态，可选值（NEW,APPLICATED,APPROVED,REJECTED,STARTED,STOPPED）" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false" description="创建时间" />
+    <column name="CREATE_BY" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="创建人" />
+    <column name="UPDATE_TIME" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false" description="修改时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="修改人" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="7" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_RESOURCE" description="记录资源的本身属性及相关描述信息，包括资源名称、资源类型、所属资源目录等信息">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="NAME" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false" description="非空，无默认值，唯一约束" />
+    <column name="TYPE" primaryKey="false" required="false" type="VARCHAR" size="10" autoIncrement="false" description="非空，无默认值 WS: webservcie" />
+    <column name="DIRECTORY_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源目录表外键&#xa;" />
+    <column name="DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="300" autoIncrement="false" description="非空，无默认值" />
+    <column name="WSDL_URL" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false" description="非空，无默认值&#xa;说明webservice如何使用&#xa;" />
+    <column name="FLAG" primaryKey="false" required="false" type="VARCHAR" size="1" default="Y" autoIncrement="false" description="非空，默认为Y&#xa;N: 不启用 &#xa;Y：启用&#xa;" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="false" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="false" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="false" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="FILE_PATH" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false" description="文件路径" />
+  </table>
+  <table name="T_DGAP_RESOURCE_APPLICATION" description="用户需要申请的资源将记录在这个表中">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="RESOURCE_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源表外键&#xa;" />
+    <column name="USER_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="STATUS" primaryKey="false" required="true" type="VARCHAR" size="10" default="NEW" autoIncrement="false" description="非空，默认值NEW&#xa;NEW: 待审批&#xa;APPR：审批通过&#xa;DENY：审批打回&#xa;" />
+    <column name="EFFECTIVE_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false" description="非空，无默认值" />
+    <column name="EXPIRE_DATE" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false" description="允许为空&#xa;NULL:为空表示不失效&#xa;" />
+    <column name="REASON" primaryKey="false" required="true" type="VARCHAR" size="200" autoIncrement="false" description="非空，无默认值" />
+    <column name="AUDIT_USER_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="允许为空" />
+    <column name="PASS_OR_NOT" primaryKey="false" required="false" type="VARCHAR" size="10" autoIncrement="false" description="允许为空&#xa;为空表示未审批&#xa;N: 未审批通过&#xa;Y: 审批通过&#xa;" />
+    <column name="APPROVAL" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false" description="允许为空&#xa;审批通过的可以不用填写审批意见&#xa;审批不通过的需要填写审批意见&#xa;" />
+    <column name="CONTACT_NUMBER" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false" description="可为空" />
+    <column name="CALLER_TOKEN" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;唯一性约束&#xa;" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="USER_NAME" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false" description="用户名" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="AUDIT_TIME" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false" description="审核时间" />
+    <unique name="AK_CALLER_TOKEN_T_DGAP_R">
+      <unique-column name="CALLER_TOKEN" />
+    </unique>
+  </table>
+  <table name="T_DGAP_RESOURCE_DIRECTORY" description="为资源的主题归类目录，不同的资源放在相关的目录下">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="NAME" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false" description="非空，无默认值，唯一约束" />
+    <column name="DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" description="允许为空" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <unique name="AK_NAME_T_DGAP_R">
+      <unique-column name="NAME" />
+    </unique>
+  </table>
+  <table name="T_DGAP_ROLE_RESOURCE">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="ROLE_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="RESOURCE_ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_TB_RESOURCE_CONFIG">
+    <column name="ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="RESOURCE_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="TABLE_NAME" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="TABLE_CN_NAME" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="FIELD_NAME" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="FIELD_CN_NAME" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="LENGTH" primaryKey="false" required="false" type="INTEGER" size="22" autoIncrement="false" />
+    <column name="TYPE" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false" />
+    <column name="IS_CONDITION" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false" />
+    <column name="CREATE_BY" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="CREATE_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" />
+    <column name="UPDATE_BY" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_TRANS">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="RESOURCE_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="METAID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="DISPATCHERORNOT" primaryKey="false" required="false" type="VARCHAR" size="10" autoIncrement="false" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="TRANSNAME" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" />
+    <column name="FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_WS_DAILY_STAT" description="统计每天的服务执行情况，包括成功、失败、平均耗时等信息">
+    <column name="ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="STAT_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false" description="非空，无默认值" />
+    <column name="RESOURCE_DIR" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源目录表外键&#xa;" />
+    <column name="WEB_SERVICE_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源表外键&#xa;" />
+    <column name="WEB_SERVICE_NAME" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false" description="非空，无默认值" />
+    <column name="BUSSNESS_NAME" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false" description="非空，无默认值" />
+    <column name="CALLER_USER" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;唯一约束&#xa;" />
+    <column name="SUCCESS_TIMES" primaryKey="false" required="true" type="INTEGER" size="22" autoIncrement="false" description="非空，无默认值" />
+    <column name="FAIL_TIMES" primaryKey="false" required="true" type="INTEGER" size="22" autoIncrement="false" description="非空，无默认值" />
+    <column name="AVG_TIMECOST" primaryKey="false" required="true" type="INTEGER" size="22" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_WS_ERROR_LOG" description="记录web服务出错信息日志">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="RESOURCE_DIRECTORY_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源目录表外键&#xa;" />
+    <column name="WEB_SERVICE_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源表外键&#xa;" />
+    <column name="WEB_SERVICE_NAME" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false" description="非空，无默认值" />
+    <column name="METHOD_NAME" primaryKey="false" required="true" type="VARCHAR" size="50" autoIncrement="false" description="非空，无默认值" />
+    <column name="CALLER_USER" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;唯一约束&#xa;" />
+    <column name="ERROR_TYPE" primaryKey="false" required="true" type="VARCHAR" size="10" autoIncrement="false" description="非空，无默认值" />
+    <column name="ERROR_DESC" primaryKey="false" required="true" type="VARCHAR" size="100" autoIncrement="false" description="非空，无默认值" />
+    <column name="ERROR_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false" description="非空，默认值为当前时间" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="20" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+  </table>
+  <table name="T_DGAP_WS_LOG" description="日志类，记录web服务的调用情况">
+    <column name="ID" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="RESOURCE_DIR" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源目录表外键&#xa;" />
+    <column name="WEB_SERVICE_ID" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值&#xa;资源表外键&#xa;" />
+    <column name="WEB_SERVICE_NAME" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false" description="非空，无默认值" />
+    <column name="METHOD_NAME" primaryKey="false" required="true" type="VARCHAR" size="50" autoIncrement="false" description="非空，无默认值" />
+    <column name="CALLER_USER" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值唯一性约束" />
+    <column name="ERROR_TYPE" primaryKey="false" required="false" type="VARCHAR" size="10" autoIncrement="false" description="允许为空" />
+    <column name="ERROR_DESC" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false" description="允许为空" />
+    <column name="INVOKE_START_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="11,6" autoIncrement="false" description="非空，无默认值" />
+    <column name="INVOKE_END_DATE" primaryKey="false" required="false" type="TIMESTAMP" size="11,6" autoIncrement="false" description="允许为空" />
+    <column name="ERROR_DATE" primaryKey="false" required="false" type="TIMESTAMP" size="11,6" autoIncrement="false" description="允许为空" />
+    <column name="CREATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="CREATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="UPDATE_BY" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="非空，无默认值" />
+    <column name="UPDATE_TIME" primaryKey="false" required="true" type="TIMESTAMP" size="7" default="SYSDATE" autoIncrement="false" description="非空，默认值当前时间" />
+    <column name="DEL_FLAG" primaryKey="false" required="true" type="VARCHAR" size="10" default="N" autoIncrement="false" description="非空，默认值为N&#xa;N: 未删除&#xa;Y: 已删除&#xa;" />
+    <column name="RESERVED_FIELD1" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD2" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD3" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD4" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD5" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD6" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD7" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD8" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD9" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD10" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD11" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD12" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD13" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD14" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD15" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD16" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD17" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD18" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD19" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+    <column name="RESERVED_FIELD20" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false" />
+  </table>
+</database>

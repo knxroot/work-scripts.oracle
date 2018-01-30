@@ -1,0 +1,40 @@
+---
+
+- include: validate.yml
+  tags:
+    - wls-plain-install
+    - wls-install-with-domain
+    - wls-install-with-managed-server
+
+- include: prepare.yml
+  become: yes
+  when: weblogic_force_installation or (not weblogic_already_installed)
+  tags:
+    - wls-plain-install
+    - wls-install-with-domain
+    - wls-install-with-managed-server
+
+- include: install.yml
+  become: yes
+  become_user: "{{ oracle.user }}"
+  when: weblogic_force_installation or (not weblogic_already_installed)
+  tags:
+    - wls-plain-install
+    - wls-install-with-domain
+    - wls-install-with-managed-server
+
+- include: create-domain.yml
+  become: yes
+  become_user: "{{ oracle.user }}"
+  when: not weblogic_domain_already_installed
+  tags:
+    - wls-install-with-domain
+    - wls-install-with-managed-server
+
+- include: create-managed-server.yml
+  become: yes
+  become_user: "{{ oracle.user }}"
+  when: not weblogic_managed_server_already_installed
+  tags:
+    - wls-install-with-managed-server
+

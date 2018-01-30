@@ -1,0 +1,50 @@
+# 172.16.0.100 as jump server
+
+[nginx]
+192.168.21.249 hostname=svr_na
+
+[app]
+172.16.0.100 hostname=svr_ad
+192.168.21.249 hostname=svr_na
+
+[cache]
+192.168.21.246 hostname=svr_czt
+192.168.21.247 hostname=svr_cz
+
+[dubbo]
+192.168.21.248 hostname=svr_dz
+172.16.0.100 hostname=svr_ad
+
+[zookeeper]
+192.168.21.246 hostname=svr_czt
+192.168.21.247 hostname=svr_cz
+192.168.21.248 hostname=svr_dz
+
+[db]
+#192.168.21.243 hostname=db ansible_ssh_user=root ansible_ssh_pass="sofn@123"
+192.168.21.241 hostname=dbs1 ansible_ssh_user=oracle ansible_ssh_pass=oracle
+#10.10.10.200 hostname=dbs2 ansible_ssh_user=root ansible_ssh_pass="sofn@123"
+#192.168.21.249 hostname=svr249 ansible_ssh_user=root ansible_ssh_pass="sofn@123"
+
+[code]
+192.168.21.245 hostname=svr_code
+
+[test]
+192.168.21.246 hostname=svr_czt
+
+[java7]
+
+[java8]
+192.168.21.243
+192.168.21.241
+192.168.21.245
+192.168.21.246
+192.168.21.247
+192.168.21.248
+#192.168.21.249
+172.16.0.100
+
+[all:vars]
+ansible_ssh_user=dev
+ansible_ssh_pass=gjzspt@!@#
+root_pass="sofn@123"

@@ -1,0 +1,66 @@
+sqlplus64 "sys/oracle@10.0.50.163/orcl as sysdba" 2>/dev/null <<<"select table_name from all_tables;"
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 1 15:33:53 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> 
+TABLE_NAME
+------------------------------
+ICOL$
+IND$
+COL$
+CLU$
+TAB$
+LOB$
+COLTYPE$
+SUBCOLTYPE$
+NTAB$
+REFCON$
+OPQTYPE$
+
+TABLE_NAME
+------------------------------
+ICOLDEP$
+VIEWTRCOL$
+LIBRARY$
+ASSEMBLY$
+ATTRCOL$
+TYPE_MISC$
+TS$
+FET$
+UET$
+SEG$
+USER$
+
+TABLE_NAME
+------------------------------
+TSQ$
+UNDO$
+FILE$
+OBJ$
+PROXY_DATA$
+PROXY_ROLE_DATA$
+CON$
+CCOL$
+CDEF$
+BOOTSTRAP$
+OBJERROR$
+
+TABLE_NAME
+------------------------------
+WM$CONSTRAINTS_TABLE
+LOGMNRC_DBNAME_UID_MAP
+LOGMNRG_TABCOMPART$
+LOGMNRG_TAB$
+LOGMNRG_CDEF$
+
+2964 rows selected.
+
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options

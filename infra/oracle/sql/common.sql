@@ -1,0 +1,1 @@
+select distinct ISSPECIFIED from v$spparameter;

@@ -1,0 +1,7 @@
+oracle_user: oracle
+oracle_group: oinstall
+oracle_tmp: '/tmp/oracle'
+oracle_base: '/opt/app/oracle'
+oracle_home: '{{ oracle_base }}/product/11.2.0/oracle'
+pri_instance: orclm
+slv_instance: slave

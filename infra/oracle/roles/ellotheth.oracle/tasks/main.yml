@@ -1,0 +1,281 @@
+---
+# tasks for the oracle install
+#
+# This role is a rough port of an internal oracle installation script. It makes
+# a few assumptions:
+# - You've already set up your hostname. Both the CentOS installer and Vagrant
+#   will do this for you.
+# - You've already set up ip[6]tables the way you like.
+# - You're running this task as a privileged user (root or sudo)
+# - You've already set up any extra Yum repositories.
+
+#
+# install dependencies
+#
+
+#- name: install dev tools
+#  yum: name="@Development tools" state=present
+
+- name: install x86 oracle dependencies
+  tags:
+    - pre_oracle_install
+  yum: name={{ item }} state=present
+  with_items:
+    - ksh
+    - man
+    - wget
+    - unzip
+    - binutils
+    - compat-libstdc++-33
+    - compat-libcap1
+    - gcc
+    - gcc-c++
+    - elfutils-libelf
+    - unixODBC
+    - unixODBC-devel
+    - elfutils-libelf-devel
+    - libaio-devel
+
+#
+# unpack the oracle installers
+#
+
+- include: get_installer.yml
+  when: oracle_installer1 != false
+  vars:
+    installer: "{{ oracle_installer1 }}"
+    checksum: "{{ oracle_checksum1 }}"
+
+- include: get_installer.yml
+  when: oracle_installer2 != false
+  vars:
+    installer: "{{ oracle_installer2 }}"
+    checksum: "{{ oracle_checksum2 }}"
+
+- name: make sure the installer directory exists
+  tags:
+    - pre_oracle_install
+  stat: path={{ oracle_tmp }}/database
+  register: install_dir
+  failed_when: not install_dir.stat.exists or not install_dir.stat.isdir
+
+#
+# config system files for oracle
+#
+
+- name: set up the oracle hostnames
+  tags:
+    - pre_oracle_install
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "127.0.0.1 {{ item }}"
+  with_items:
+    - "{{ oracle_hostname }}"
+    - "{{ ansible_hostname }}"
+
+- name: oracle-recommended sysctl
+  tags:
+    - pre_oracle_install
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    ignoreerrors: yes # Ignore errors about unknown keys
+  with_items:
+    - { name: "kernel.shmall", value: "2097152" }
+    - { name: "kernel.shmmax", value: "1050470400" }
+    - { name: "kernel.shmmni", value: "4096" }
+    - { name: "kernel.sem", value: "250 32000 100 128" }
+    - { name: "fs.file-max", value: "6815744" }
+    - { name: "fs.aio-max-nr", value: "1048576" }
+    - { name: "net.ipv4.ip_local_port_range", value: "9000 65500" }
+    - { name: "net.core.rmem_default", value: "262144" }
+    - { name: "net.core.rmem_max", value: "4194304" }
+    - { name: "net.core.wmem_default", value: "262144" }
+    - { name: "net.core.wmem_max", value: "1048576" }
+
+- name: save sysctl config
+  tags:
+    - pre_oracle_install
+  command: sysctl -p
+  ignore_errors: yes # because apparently the default centos config is invalid!
+
+# it's in the oracle recommendations. i don't even know.
+- name: oracle-recommended PAM config
+  tags:
+    - pre_oracle_install
+  lineinfile:
+    dest: /etc/pam.d/login
+    state: present
+    line: "session required pam_limits.so"
+
+- name: oracle-recommended security limits
+  tags:
+    - pre_oracle_install
+  lineinfile:
+    dest: /etc/security/limits.conf
+    state: present
+    line: "{{ item }}"
+  with_items:
+    - "oracle soft nofile 4096"
+    - "oracle hard nofile 65536"
+    - "oracle soft nproc 2047"
+    - "oracle hard nproc 16384"
+    - "oracle soft stack 10240"
+    - "oracle hard stack 32768"
+
+- name: disable setenforce # because oracle says so, that's why
+  tags:
+    - pre_oracle_install
+  command: /usr/sbin/setenforce 0
+
+- name: oracle-recommended selinux
+  tags:
+    - pre_oracle_install
+  selinux: policy=targeted state=disabled
+
+#
+# create the oracle user and groups
+#
+
+- name: create initial groups for the oracle user
+  tags:
+    - pre_oracle_install
+  group: name={{ item }} state=present
+  with_items:
+    - "{{ oracle_group }}"
+    - "{{ oracle_dba_group }}"
+
+- name: create oracle user
+  tags:
+    - pre_oracle_install
+  user:
+    name: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"
+    groups: "{{ oracle_dba_group }}"
+    home: /home/{{ oracle_user }}
+    shell: /bin/bash
+    password: "{{ oracle_pass }}"
+    append: yes
+
+- name: create the oracle installation path
+  tags:
+    - pre_oracle_install
+  file:
+    mode: 0755
+    path: "{{ oracle_path }}"
+    state: directory
+    group: "{{ oracle_group }}"
+    owner: "{{ oracle_user }}"
+
+- name: chown the oracle installer directory to the oracle user
+  tags:
+    - pre_oracle_install
+  file:
+    group: "{{ oracle_group }}"
+    owner: "{{ oracle_user }}"
+    path: "{{ oracle_tmp }}/database"
+    state: directory
+    recurse: yes
+
+- name: set oracle user environment
+  tags:
+    - pre_oracle_install
+  lineinfile: dest=/home/{{ oracle_user }}/.bashrc state=present line="{{ item }}"
+  with_items:
+    - "export ORACLE_BASE={{ ora_user_env.ORACLE_BASE }}"
+    - "export ORACLE_SID={{ ora_user_env.ORACLE_SID }}"
+    - "export ORACLE_HOME={{ ora_user_env.ORACLE_HOME }}"
+    - "export PATH=$PATH:$ORACLE_HOME/bin"
+    - "export NLS_LANG={{ ora_user_env.NLS_LANG }}"
+    - "export LANG=en_US.UTF-8"
+    - "export LC_CTYPE=en_US.iso88591"
+    - "stty erase ^H"
+
+#
+# install oracle
+#
+
+- name: check if oracle has already been installed
+  tags:
+    - oracle_install
+  stat: path=/etc/oratab
+  register: oracle_installed
+
+- name: compose the oracle automated installer settings
+  tags:
+    - oracle_install
+  template:
+    src: db_install.rsp.j2
+    dest: "{{ oracle_tmp }}/db_install.rsp"
+    owner: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"
+
+- name: install oracle
+  tags:
+    - oracle_install
+  sudo_user: "{{ oracle_user }}"
+  environment: "{{ ora_user_env }}"
+  # /tmp/oracle/database/runInstaller -silent -force -ignoreSysPrereqs -responseFile /tmp/oracle/db_install.rsp
+  command: "{{ oracle_tmp }}/database/runInstaller -silent -force -ignoreSysPrereqs -responseFile {{ oracle_tmp }}/db_install.rsp"
+  when: not oracle_installed.stat.exists
+
+- name: general oracle post-installation
+  tags:
+    - oracle_install
+  command: "{{ oracle_path }}/oraInventory/orainstRoot.sh"
+  when: not oracle_installed.stat.exists
+
+- name: db-specific oracle post-installation
+  tags:
+    - oracle_install
+  command: "{{ ora_user_env.ORACLE_HOME }}/root.sh"
+  when: not oracle_installed.stat.exists
+
+
+#
+# oracle post installation
+#
+
+#- name: turn off the enterprise manager web console
+#  sudo_user: "{{ oracle_user }}"
+#  environment: "{{ ora_user_env }}"
+#  command: "{{ ora_user_env.ORACLE_HOME }}/bin/emctl stop dbconsole"
+#  ignore_errors: yes
+
+- name: set oracle to autostart
+  tags:
+    - post_oracle_install_service
+  lineinfile:
+    dest: /etc/oratab
+    state: present
+    regexp: "^{{ oracle_db_name }}"
+    line: "{{ oracle_db_name }}:{{ ora_user_env.ORACLE_HOME }}:Y"
+
+- name: compose the oracle init.d script
+  tags:
+    - post_oracle_install_service
+  template: src=oracle_init.j2 dest=/etc/init.d/oracle mode=0755
+
+- name: register and start up the oracle service
+  tags:
+    - post_oracle_install_service
+  service: name=oracle state=restarted enabled=yes
+
+- name: compose the oracle user creation script
+  tags:
+    - post_oracle_install_user
+  template:
+    src: sqlplus_user_setup.sh.j2
+    dest: "{{ oracle_tmp }}/sqlplus_user_setup.sh"
+    mode: 0755
+    owner: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"
+
+- name: create the oracle db user
+  tags:
+    - post_oracle_install_user
+  sudo_user: "{{ oracle_user }}"
+  environment: "{{ ora_user_env }}"
+  command: "{{ oracle_tmp }}/sqlplus_user_setup.sh"

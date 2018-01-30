@@ -1,0 +1,60 @@
+dry run? [Y/n] [10.0.52.1] Executing task 'view_master'
+env | grep oracle
+[10.0.52.1] run: env | grep oracle
+[10.0.52.1] out: USER=oracle
+[10.0.52.1] out: LD_LIBRARY_PATH=/u01/app/oracle/product/11.2.0/dbhome_1/lib:/u01/app/oracle/product/11.2.0/dbhome_1/lib32
+[10.0.52.1] out: ORA_NLS10=/u01/app/oracle/product/11.2.0/dbhome_1/nls/data
+[10.0.52.1] out: ORACLE_BASE=/u01/app/oracle
+[10.0.52.1] out: ORACLE_DIAG=/u01/app/oracle/app/diag
+[10.0.52.1] out: PATH=/u01/app/oracle/product/11.2.0/dbhome_1/bin:/u01/app/oracle/product/11.2.0/dbhome_1/OPatch:/sbin:/bin:/usr/sbin:/usr/bin
+[10.0.52.1] out: MAIL=/var/spool/mail/oracle
+[10.0.52.1] out: PWD=/home/oracle
+[10.0.52.1] out: HOME=/home/oracle
+[10.0.52.1] out: LOGNAME=oracle
+[10.0.52.1] out: ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+[10.0.52.1] out: 
+
+locate '*.ora'
+[10.0.52.1] run: locate '*.ora'
+[10.0.52.1] out: /opt/ORCLfmap/prot1_64/etc/filemap.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/bj-ora01_orcl/sysman/config/emkey.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/bj-ora01_orcl/sysman/config/server/repoconn.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/dbs/init.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/hs/admin/extproc.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/hs/admin/initdg4odbc.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/mgw/admin/sample_mgw.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/network/admin/listener.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/network/admin/sqlnet.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/network/admin/tnsnames.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/network/admin/samples/listener.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/network/admin/samples/sqlnet.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/network/admin/samples/tnsnames.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/rdbms/admin/externaljob.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/rdbms/install/filemap.ora
+[10.0.52.1] out: /u01/app/oracle/product/11.2.0/dbhome_1/srvm/admin/init.ora
+[10.0.52.1] out: 
+
+sqlplus / as sysdba <<-EOI 
+select status from v$instance
+EOI
+[10.0.52.1] run: sqlplus / as sysdba <<-EOI 
+select status from v$instance
+EOI
+[10.0.52.1] out: 
+[10.0.52.1] out: SQL*Plus: Release 11.2.0.1.0 Production on Tue Feb 21 10:47:07 2017
+[10.0.52.1] out: 
+[10.0.52.1] out: Copyright (c) 1982, 2009, Oracle.  All rights reserved.
+[10.0.52.1] out: 
+[10.0.52.1] out: 
+[10.0.52.1] out: Connected to:
+[10.0.52.1] out: Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit Production
+[10.0.52.1] out: With the Partitioning, OLAP, Data Mining and Real Application Testing options
+[10.0.52.1] out: 
+[10.0.52.1] out: SQL>   2  Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit Production
+[10.0.52.1] out: With the Partitioning, OLAP, Data Mining and Real Application Testing options
+[10.0.52.1] out: 
+
+
+Done.
+Disconnecting from 10.0.52.1... done.

@@ -1,0 +1,51 @@
+#!/bin/sh
+# {{ ansible_managed }}
+
+source /home/{{ oracle_user }}/.bashrc
+
+# Enable Forced Logging
+sqlplus / as sysdba <<EOT
+ALTER DATABASE FORCE LOGGING;
+exit
+EOT
+
+# Configure Redo Transport Authentication
+
+# Configuring an Oracle Database to Receive Redo Data
+sqlplus / as sysdba <<EOT
+ALTER DATABASE ADD STANDBY LOGFILE GROUP 11 '{{ oracle_base }}/oradata/{{ pri_instance }}/standby_redo11.log' size 50M;  
+ALTER DATABASE ADD STANDBY LOGFILE GROUP 12 '{{ oracle_base }}/oradata/{{ pri_instance }}/standby_redo12.log' size 50M;  
+ALTER DATABASE ADD STANDBY LOGFILE GROUP 13 '{{ oracle_base }}/oradata/{{ pri_instance }}/standby_redo13.log' size 50M;
+
+ALTER DATABASE ARCHIVELOG;
+
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_3 = 'LOCATION = USE_DB_RECOVERY_FILE_DEST VALID_FOR=(STANDBY_LOGFILE,STANDBY_ROLE)';
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_STATE_3 = ENABLE;
+exit
+EOT
+
+# ALTER DATABASE FLASHBACK ON;
+
+# Set Primary Database Initialization Parameters
+# Primary Role Initialization Parameters
+# ALTER SYSTEM SET local_listener='{{ pri_instance }}' scope=both;
+sqlplus / as sysdba <<EOT
+ALTER SYSTEM SET DB_NAME = {{ pri_instance }}
+ALTER SYSTEM SET DB_UNIQUE_NAME = {{ pri_instance }}
+ALTER SYSTEM SET LOG_ARCHIVE_CONFIG = 'DG_CONFIG=({{ pri_instance }},{{ slv_instance }})';  
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_1 = 'LOCATION = USE_DB_RECOVERY_FILE_DEST valid_for=(all_logfiles,all_roles) db_unique_name={{ pri_instance }}' SCOPE=BOTH; 
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_2 = 'SERVICE={{ slv_instance }} lgwr async valid_for=(online_logfiles,primary_role) db_unique_name={{ slv_instance }}' SCOPE=BOTH;  
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_STATE_1 = ENABLE;
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_STATE_2 = ENABLE;
+ALTER SYSTEM SET EMOTE_LOGIN_PASSWORDFILE = EXCLUSIVE
+exit;
+EOT
+
+# Standby Role Initialization Parameters
+# ALTER SYSTEM SET DB_FILE_NAME_CONVERT='{{ slv_instance }}','{{ pri_instance }}'
+# ALTER SYSTEM SET LOG_FILE_NAME_CONVERT= '/arch1/boston/','/arch1/chicago/','/arch2/boston/','/arch2/chicago/'
+sqlplus / as sysdba <<EOT
+ALTER SYSTEM SET FAL_SERVER={{ slv_instance }}
+ALTER SYSTEM SET STANDBY_FILE_MANAGEMENT=AUTO 
+exit;
+EOT

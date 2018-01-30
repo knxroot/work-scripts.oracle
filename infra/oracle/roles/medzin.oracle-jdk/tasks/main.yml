@@ -1,0 +1,8 @@
+---
+- name: install oracle-jdk on debian family systems
+  include: install_debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: install oracle-jdk on redhat family systems
+  include: install_redhat.yml
+  when: ansible_os_family == "RedHat"

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database">
+  <database name="mdata">
+    <table name="t_mdm_basic_code">
+      <column name="id" primaryKey="true" required="true" type="VARCHAR" size="64" autoIncrement="false" description="行序号"/>
+      <column name="name" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="代码名称"/>
+      <column name="mark" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false" description="代码标识"/>
+      <column name="abbreviation" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="简称"/>
+      <column name="status" primaryKey="false" required="false" type="CHAR" size="1" default="0" autoIncrement="false" description="状态（0，草稿，1，发布,2，作废）"/>
+      <column name="codes_id" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="所属代码集id"/>
+      <column name="parent_id" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="父代码集id"/>
+      <column name="parent_ids" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="所有父代码集id拼接"/>
+      <column name="create_by" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="创建人id"/>
+      <column name="createDate" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false" description="创建时间"/>
+      <column name="update_by" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="更新人id"/>
+      <column name="updateDate" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false" description="更新时间"/>
+      <column name="del_flag" primaryKey="false" required="false" type="CHAR" size="1" default="0" autoIncrement="false" description="删除标志"/>
+      <column name="remarks" primaryKey="false" required="false" type="VARCHAR" size="255" autoIncrement="false" description="备注"/>
+    </table>
+    <table name="t_mdm_basic_codes">
+      <column name="id" primaryKey="true" required="true" type="VARCHAR" size="64" autoIncrement="false" description="行序号"/>
+      <column name="name" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="代码集名称"/>
+      <column name="format" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false" description="表示格式"/>
+      <column name="status" primaryKey="false" required="false" type="CHAR" size="1" default="0" autoIncrement="false" description="状态（0，草稿，1，发布,2，作废）"/>
+      <column name="normal" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false" description="引用标准"/>
+      <column name="mark" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false" description="代码集标识"/>
+      <column name="description" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false" description="代码集描述"/>
+      <column name="batch" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false" description="同步批号"/>
+      <column name="principle" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false" description="分类原则"/>
+      <column name="parent_id" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="父代码集id"/>
+      <column name="parent_ids" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="所有父代码集id拼接"/>
+      <column name="create_by" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="创建人id"/>
+      <column name="createDate" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false" description="创建时间"/>
+      <column name="update_by" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false" description="更新人id"/>
+      <column name="updateDate" primaryKey="false" required="false" type="TIMESTAMP" size="19" autoIncrement="false" description="更新时间"/>
+      <column name="del_flag" primaryKey="false" required="false" type="CHAR" size="1" default="0" autoIncrement="false" description="删除标志"/>
+      <column name="remarks" primaryKey="false" required="false" type="VARCHAR" size="255" autoIncrement="false" description="备注"/>
+    </table>
+  </database>

@@ -1,0 +1,6 @@
+---
+# Default to an empty list
+sudoers: []
+
+# Remove file from /etc/sudoers.d?
+sudoers_remove: false

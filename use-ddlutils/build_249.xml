@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Using ddlutils" default="database-dump">
+
+	<path id="runtime-classpath">
+	  <fileset dir="lib">
+	    <include name="**/*.jar"/>
+	    <include name="**/*.zip"/>
+	  </fileset>
+	</path>
+
+	<property name="connectionProperties" value="remarksReporting=true"/>
+
+	<target name="database-dump" description="Dumps the database structure">
+	  <taskdef name="databaseToDdl"
+		   classname="org.apache.ddlutils.task.DatabaseToDdlTask">
+	    <classpath refid="runtime-classpath"/>
+	  </taskdef>
+
+	  <databaseToDdl databasetype="oracle9" includetablefilter="T_DGAP.*">
+	    <database url="jdbc:oracle:thin:@192.168.21.249:1521:gjzs"
+		      username="gjzspt"
+		      password="12345678">
+		</database>
+
+	    <writeSchemaToFile outputFile="249-gjzspt-schema.xml"/>
+	    <!--
+	    <writeDataToFile outputFile="249-gjzspt-data.xml"/>
+	    -->
+	  </databaseToDdl>
+	</target>
+
+</project>
