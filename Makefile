@@ -1,3 +1,4 @@
+.INTERMEDIATE: export.sql
 all: import
 
 import: fix-sql
