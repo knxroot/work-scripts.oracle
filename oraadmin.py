@@ -89,6 +89,7 @@ startup;""")
 def _createdb(instance_name,schema_name,password):
     runsql(instance_name,"""CREATE USER """+schema_name+""" IDENTIFIED BY """+password+""";
 GRANT CONNECT TO """+schema_name+""";
+GRANT create view TO """+schema_name+""";
 GRANT RESOURCE TO """+schema_name+""";""")
 
 def _drop_tables(instance_name,schema_name):

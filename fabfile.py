@@ -356,7 +356,7 @@ def _backup2(db_password, schema):
 def demo2_impdb():
     execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.1'])
     execute(admin._createdb,"orcl","gjzspt_demo2","12345678",hosts=['10.0.52.1'])
-    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/gjzspt20180115.dmp","Y","Y",hosts=['10.0.52.1'])
+    #execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/gjzspt20180115.dmp","Y","Y",hosts=['10.0.52.1'])
 
 def dirty_impdb():
     #execute(admin._dropdb_forceful,"orcl","gjzspt_dirty",hosts=['10.0.52.1'])
