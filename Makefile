@@ -23,5 +23,5 @@ fixed.sql: export.sql
 	sed 's/GJZSPT\./$(db_name)./g' $@ | sponge $@
 
 export.sql:
-	mkdir -p sqls; mv $@ sqls/backup_$(shell date +%F_%T).sql
+	-test -f $@ && { mkdir -p sqls; mv $@ sqls/backup_$(shell date +%F_%T).sql;}
 	cp /home/helong/TencentFiles/2898132719/FileRecv/export.sql $@
