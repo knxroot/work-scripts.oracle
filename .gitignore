@@ -1,2 +1,4 @@
 *.pyc
 sqls
+export.sql
+fixed.sql
