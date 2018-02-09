@@ -363,6 +363,11 @@ def dirty_impdb():
     #execute(admin._createdb,"orcl","gjzspt_dirty","12345678",hosts=['10.0.52.1'])
     execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_dirty","/home/helong/TencentFiles/2898132719/FileRecv/gjzspt20180123.dmp","Y","Y",hosts=['10.0.52.1'])
 
+def bj_165_impdb():
+    execute(admin._dropdb_forceful,"orcl","gjzspt_bj_165",hosts=['10.0.52.1'])
+    execute(admin._createdb,"orcl","gjzspt_bj_165","12345678",hosts=['10.0.52.1'])
+    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_bj_165","/home/helong/TencentFiles/2898132719/FileRecv/gjzspt0118.dmp","Y","Y",hosts=['10.0.52.1'])
+
 def jcfx2_impdb():
     execute(admin._dropdb_forceful,"orcl","jcfx2",hosts=['10.0.52.1'])
     execute(admin._createdb,"orcl","jcfx2","12345678",hosts=['10.0.52.1'])
