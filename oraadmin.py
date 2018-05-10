@@ -12,7 +12,8 @@ from common import *
 ################################################################################
 
 #nls_lang="AMERICAN_AMERICA.ZHS16GBK"
-nls_lang="AMERICAN_AMERICA.UTF8"
+#nls_lang="AMERICAN_AMERICA.UTF8"
+nls_lang="AMERICAN_AMERICA.AL32UTF8"
 
 def _tail_alert_log(oracle_base,instance_name):
     vrun("""sed -n '/ORA-/p' """+oracle_base+"""/diag/rdbms/"""+instance_name+"""/"""+instance_name+"""/trace/alert_"""+instance_name+""".log | tail""")

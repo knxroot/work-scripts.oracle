@@ -235,8 +235,8 @@ def dataguard_physical_start():
     execute(dg._start_as_physical_master, "orcl", hosts=["10.0.50.161"])
 
 def dataguard_physical_stop():
-    execute(dg._stop_as_physical_master, "orcl", hosts=["10.0.50.161"])
-    execute(dg._stop_as_physical_slave, "slave", hosts=["10.0.50.162"])
+    execute(dg._stop_with_listener, "orcl", hosts=["10.0.50.161"])
+    execute(dg._stop_with_listener, "slave", hosts=["10.0.50.162"])
 
 def dataguard_physical_vlog():
     execute(admin._tail_alert_log,c.oracle_base,"slave",hosts=["10.0.50.162"])
@@ -257,11 +257,10 @@ def _setup_dg_slave():
 
 def v_standby():
     _view_pri(db_master_sys)
-    #_view_parameter(db_master_sys,"file")
     #print green("################################################################################")
     #execute(admin._view_db,"orcl",hosts=["10.0.50.161"])
     print green("################################################################################")
-    _view_database(db_slave_sys)
+    _view_standby(db_slave_sys)
     #print green("################################################################################")
     #execute(admin._view_db,"slave",hosts=["10.0.50.162"])
 
@@ -277,12 +276,15 @@ def verify_standby():
 
 def _view_pri(conn):
     _view_database(conn)
-
     conn.run_query("select DEST_ID, STATUS, DESTINATION, ERROR from V$ARCHIVE_DEST where DEST_ID <= 2")
     conn.run_query("select dest_name,status,error from v$archive_dest where dest_id <= 2")
     conn.run_query("select DEST_ID,DEST_NAME,STATUS,TARGET,DESTINATION from V$ARCHIVE_DEST where dest_id <=2")
     conn.run_query("select STATUS, GAP_STATUS from V$ARCHIVE_DEST_STATUS where DEST_ID <= 2")
     conn.run_query("select SEQUENCE#, FIRST_TIME, NEXT_TIME, APPLIED, ARCHIVED from V$ARCHIVED_LOG order by FIRST_TIME")
+
+def _view_standby(conn):
+    _view_database(conn)
+    conn.run_query("SELECT SEQUENCE#,APPLIED FROM V$ARCHIVED_LOG ORDER BY SEQUENCE#")
 
 def _view_parameter(conn,name_pattern):
     conn.run_query("SELECT name, value, isdefault FROM v$parameter where name like '%"+name_pattern+"%'")
@@ -354,9 +356,14 @@ def _backup2(db_password, schema):
     c.remoteFile = admin._backup(db_password, schema)
 
 def demo2_impdb():
-    execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.1'])
-    execute(admin._createdb,"orcl","gjzspt_demo2","12345678",hosts=['10.0.52.1'])
-    #execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/gjzspt20180115.dmp","Y","Y",hosts=['10.0.52.1'])
+    #execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.8'])
+    #execute(admin._createdb,"orcl","gjzspt_demo2","Oe123qwe###",hosts=['10.0.52.1'])
+    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/20180416.dmp","Y","Y",hosts=['10.0.52.1'])
+
+def temp_impdb():
+    execute(admin._dropdb_forceful,"orcl","gjzspt_temp",hosts=['10.0.52.8'])
+    execute(admin._createdb,"orcl","gjzspt_temp","12345678",hosts=['10.0.52.8'])
+    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_temp","/home/helong/TencentFiles/2898132719/FileRecv/dev_gjzspt_20180423_wd.dmp","Y","N",hosts=['10.0.52.8'])
 
 def dirty_impdb():
     #execute(admin._dropdb_forceful,"orcl","gjzspt_dirty",hosts=['10.0.52.1'])
@@ -467,4 +474,9 @@ def _restore_db(db_password,schema,from_schema,filepath):
 def _enable_audit(instance_name,schema_name):
     admin._enable_audit2(instance_name,schema_name)
     admin._restart(instance_name)
+#########################################52.7####################################
+def dev_2_52dot7():
+    #execute(_exp,"Oe123qwe###","gjzspt","dev",hosts=['192.168.21.249'])
+    execute(admin._createdb,"orcl","gjzspt_test","Oe123qwe###",hosts=['10.0.52.7'])
+    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_test","/home/helong/he/lky/share/sjgxpt/script/db/dmpfiles/dev_gjzspt_20180303_wd.dmp","Y","Y",hosts=['10.0.52.7'])
 

@@ -42,6 +42,12 @@ alter database mount standby database;
 alter database recover managed standby database using current logfile disconnect from session;
 EOI""")
 
+def _stop_with_listener(instance):
+    vrun("""lsnrctl stop""")
+    vrun("""env ORACLE_SID="""+instance+""" sqlplus / as sysdba <<-EOI
+shutdown immediate;
+EOI""")
+
 def _switch_log(instance_name):
     runsql(instance_name,"ALTER SYSTEM SWITCH LOGFILE;")
 
