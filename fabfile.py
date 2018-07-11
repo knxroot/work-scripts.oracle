@@ -23,11 +23,11 @@ db_master_jcfx=Orac("jcfx","12345678","10.0.50.161","orcl")
 db_master_pub_jcfx=Orac("jcfx","12345678","218.89.222.117","orcl",1523)
 db_slave_sys=Orac("sys","oracle","10.0.50.162","slave")
 
-db_rac=Oracc("sys","oracle","10.0.52.199","orcl")
-db_rac_jcfx=Oracc("jcfx","12345678","10.0.52.199","orcl")
+#db_rac=Oracc("sys","oracle","10.0.52.199","orcl")
+#db_rac_jcfx=Oracc("jcfx","12345678","10.0.52.199","orcl")
 
-db_weiq=Oracc("sys","123456789","172.16.7.116","oracle")
-db_weiq_jcfx=Oracc("jcfx","12345678","172.16.7.116","oracle")
+#db_weiq=Oracc("sys","123456789","172.16.7.116","oracle")
+#db_weiq_jcfx=Oracc("jcfx","12345678","172.16.7.116","oracle")
 
 db_163_sys=Orac("sys","oracle","10.0.50.163","orcl")
 db_163_gjzspt=Orac("gjzspt","12345678","10.0.50.163","orcl")
@@ -130,11 +130,14 @@ SELECT *
     db_master_jcfx.run_statement("""SELECT * from test_mv""")
 
 ################################################################################
+'''
 def verify_weiq():
     db_weiq._exec(sqls._create_user('jcfx','12345678'))
     db_weiq_jcfx._exec("select * from dual;")
+'''
 
 ################################################################################
+'''
 def verify_rac():
     db_rac._exec(sqls._create_table_ws_log())
     db_rac._exec("insert into t_dgap_ws_log(ID,METHOD_NAME,INVOKE_START_DATE) values ('DATA_GUARD_TESTING','data guard test',CURRENT_TIMESTAMP);")
@@ -149,6 +152,7 @@ def verify_rac():
     db_rac_jcfx._exec("insert into t_dgap_ws_log(ID,METHOD_NAME,INVOKE_START_DATE) values ('DATA_GUARD_TESTING','data guard test',CURRENT_TIMESTAMP);")
     db_rac_jcfx._exec("select * from t_dgap_ws_log;")
     db_rac_jcfx._exec(sqls._drop_table("t_dgap_ws_log"))
+'''
 
 ################################################################################
 def dataguard_logical_start():
@@ -356,9 +360,9 @@ def _backup2(db_password, schema):
     c.remoteFile = admin._backup(db_password, schema)
 
 def demo2_impdb():
-    #execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.8'])
-    #execute(admin._createdb,"orcl","gjzspt_demo2","Oe123qwe###",hosts=['10.0.52.1'])
-    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/20180416.dmp","Y","Y",hosts=['10.0.52.1'])
+    execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.1'])
+    execute(admin._createdb,"orcl","gjzspt_demo2","Oe123qwe###",hosts=['10.0.52.1'])
+    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/20180702.dmp","Y","Y",hosts=['10.0.52.1'])
 
 def temp_impdb():
     execute(admin._dropdb_forceful,"orcl","gjzspt_temp",hosts=['10.0.52.8'])

@@ -3,3 +3,5 @@ sqls
 export.sql
 fixed.sql
 dmpfiles/
+derby.log
+metastore_db/
