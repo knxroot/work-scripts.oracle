@@ -1,5 +1,4 @@
  val ws_log=spark.read.format("jdbc").options(Map("url"->"jdbc:oracle:thin:@192.168.21.249:1521:gjzs","user"->"gjzspt","password"->"12345678","dbtable"->"t_dgap_ws_log","driver"->"oracle.jdbc.driver.OracleDriver")).load().cache()
- ws_log
  val prop = new java.util.Properties
  prop.setProperty("driver", "oracle.jdbc.driver.OracleDriver")
  prop.setProperty("user", "dgap_dw_empty")
