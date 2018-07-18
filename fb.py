@@ -41,6 +41,7 @@ db_test_sys=Orac("sys","oracle","10.0.52.1","orcl")
 import fab_quanwei as quanwei
 import fab_others as others
 import fab_dev as dev
+import fab_testdb as testdb
 
 import fab_dataguard_161 as dg161
 import fab_dataguard_163 as dg163
