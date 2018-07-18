@@ -1,5 +1,0 @@
-You have a paragraph of text. It contains multiple sentences. Are they written
-on the same line? Do they contain arbitrary line breaks? Do you wish there were
-a convenient way to Zenify the paragraph? You know, so that you get the benefits
-of easy diffing, efficient editing, and the bonus safeguard: very long sentences
-stick out like a sore thumb?
