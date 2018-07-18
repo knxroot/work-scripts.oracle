@@ -18,9 +18,9 @@ db_master_jcfx=Orac("jcfx","12345678","10.0.50.161","orcl")
 db_master_pub_jcfx=Orac("jcfx","12345678","218.89.222.117","orcl",1523)
 
 ################################################################################
-@hosts(["10.0.50.161"])
+@task
 def quanwei_add_pri():
-    admin._grant_additional_priviliges("orcl","jcfx")
+    execute(admin._grant_additional_priviliges,"orcl","jcfx",hosts=['10.0.50.161'])
 
 def quanwei_check():
     sql="select EXTENDED_TIMESTAMP,OS_USER,userhost,os_process,DB_USER,OBJECT_SCHEMA,OBJECT_NAME,RETURNCODE,STATEMENT_TYPE,SQL_TEXT,AUDIT_TYPE from DBA_COMMON_AUDIT_TRAIL order by EXTENDED_TIMESTAMP desc,LOGOFF_TIME desc"
