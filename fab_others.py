@@ -72,6 +72,7 @@ def demo_impdb():
 def _backup2(db_password, schema):
     c.remoteFile = admin._backup(db_password, schema)
 
+@task
 def demo2_impdb():
     execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.1'])
     execute(admin._createdb,"orcl","gjzspt_demo2","Oe123qwe###",hosts=['10.0.52.1'])
