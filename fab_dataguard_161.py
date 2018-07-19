@@ -13,6 +13,7 @@ import oraadmin as admin
 import oradg as dg
 import sqls as sqls
 from dataguard_ import *
+from dataguard_ import _setup,_view_database
 
 ##############################################################################
 @task
@@ -28,17 +29,10 @@ def _setup_new_master():
     dg.prepare_dup_slave(c.oracle_base,c.oracle_home,"10.0.52.1","orcl","orcl")
     dg.dup_m2m_onslave(c.oracle_base,c.oracle_password,c.pri_tnsname,c.slave_tnsname,"orcl","orcl")
 
+@task
 def v_dup():
-    execute(_view_master)
-    execute(_view_new_master)
-
-@roles("dup.db_master")
-def _view_master():
-    admin._view_db("orcl")
-
-@roles('dup.db_new_master')
-def _view_new_master():
-    admin._view_db("orcl")
+    execute(admin.view_db,"orcl",hosts=["10.0.52.1"])
+    execute(admin._view_db,"orcl",hosts=["10.0.50.161"])
 
 ################################################################################
 @task
@@ -58,14 +52,12 @@ def dataguard_physical_vlog():
 
 @task
 def dataguard_create_phisical_standby():
-    execute(_prepare_dg_master)
-    execute(_setup_dg_slave)
+    execute(_prepare_dg_master,hosts=["10.0.50.161"])
+    execute(_setup_dg_slave,hosts=["10.0.50.162"])
 
-@roles('standby.master')
 def _prepare_dg_master():
     dg.config_standby_pri(c.oracle_base,c.oracle_home,"10.0.50.162",c.pri_instance,c.slave_instance,c.pri_tnsname,c.slave_tnsname)
 
-@roles('standby.slave')
 def _setup_dg_slave():
     dg.prepare_dup_slave(c.oracle_base,c.oracle_home,"10.0.50.161",c.pri_instance,c.slave_instance,c.pri_tnsname,c.slave_tnsname)
     dg.create_standby_onslave(c.oracle_base,c.oracle_password,c.pri_tnsname,c.slave_tnsname,c.pri_instance,c.slave_instance)

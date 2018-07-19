@@ -1,7 +1,7 @@
 #import os.path as path
 #from os.path import *
 #from config import *
-from common import *
+from common import vrun
 
 from fabric.api import *
 from oracon import Orac
@@ -12,6 +12,7 @@ import config as c
 import oraadmin as admin
 import oradg as dg
 import sqls as sqls
+from utils import _exp,_imp,_backup,_recreatedb
 
 ################################################################################
 db_dev_sys=Orac("sys","Oe123qwe###","192.168.21.249","gjzs")

@@ -2,6 +2,8 @@
 #from os.path import *
 #from config import *
 from common import *
+from utils import *
+from utils import _exp
 
 from fabric.api import *
 from oracon import Orac
@@ -77,6 +79,10 @@ def demo2_impdb():
     execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.1'])
     execute(admin._createdb,"orcl","gjzspt_demo2","Oe123qwe###",hosts=['10.0.52.1'])
     execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/165.dmp","Y","Y",hosts=['10.0.52.1'])
+
+@task
+def demo2_backup():
+    execute(_exp,"Oe123qwe###","gjzspt_demo2","dev",hosts=['10.0.52.1'])
 
 def temp_impdb():
     execute(admin._dropdb_forceful,"orcl","gjzspt_temp",hosts=['10.0.52.8'])

@@ -13,6 +13,8 @@ import oraadmin as admin
 import oradg as dg
 import sqls as sqls
 
+from utils import *
+
 ################################################################################
 db_master_jcfx=Orac("jcfx","12345678","10.0.50.161","orcl")
 db_master_pub_jcfx=Orac("jcfx","12345678","218.89.222.117","orcl",1523)

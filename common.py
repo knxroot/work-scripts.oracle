@@ -27,4 +27,3 @@ def sqlplus(user,password,ip,servicename,sqlcommands):
     command = "sqlplus64 "+user+"/"+password+"@'(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST="+ip+")(PORT=1521))(CONNECT_DATA=(SERVICE_NAME="+servicename+")))' "+asrole+" <<-'EOI' \n" + sqlcommands +"\nEOI"
     lrun(command)
     
-

@@ -12,6 +12,8 @@ import config as c
 import oraadmin as admin
 import oradg as dg
 import sqls as sqls
+from utils import *
+from utils import _exp,_imp,_backup,_recreatedb
 
 ################################################################################
 db_test_sys=Orac("sys","oracle","10.0.52.1","orcl")
@@ -34,24 +36,6 @@ def syncdb():
     execute(_backup,hosts=['10.0.52.1'])
     execute(_recreatedb,hosts=['10.0.52.1'])
     execute(_imp,hosts=['10.0.52.1'])
-
-def _exp(db_password,schema_name,dbname):
-    day=datetime.datetime.now().strftime("%Y%m%d")
-    c.localFile = "./dmpfiles/"+dbname+"_"+schema_name+"_"+day+"_wd.dmp"
-    admin._backup_to_localfile(db_password,schema_name,c.localFile)
-    print c.localFile
-
-def _backup():
-    c.remoteFile = admin._backup("oracle","gjzspt")
-
-def _recreatedb():
-    admin._dropdb_forceful("orcl","gjzspt")
-    admin._createdb("orcl","gjzspt","12345678")
-
-def _imp():
-    admin._imp_with_localfile("Oe123qwe###","gjzspt","gjzspt",c.localFile,'N','N')
-    #admin._imp_with_localfile("oracle","gjzspt","gjzspt",c.localFile,'N','N')
-    #admin._imp_with_remotefile("oracle","gjzspt","gjzspt",c.remoteFile,'Y','Y')
 
 ##############################################################################
 def newdev():

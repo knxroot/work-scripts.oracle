@@ -7,7 +7,9 @@ from fabric.api import *
 from oracon import Orac
 from orarac import Oracc
 from fabric.colors import green
+
 from dataguard_ import *
+from dataguard_ import _setup,_view_database
 
 import config as c
 import oraadmin as admin
