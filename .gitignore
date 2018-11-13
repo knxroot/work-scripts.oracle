@@ -5,3 +5,4 @@ fixed.sql
 dmpfiles/
 derby.log
 metastore_db/
+schema.json
