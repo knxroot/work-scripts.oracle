@@ -13,7 +13,8 @@ init:
 	files=($$(comm -23 =(svn ls $(SVN_ROOT)/sofn-server/sofn-$*-service/src/main/resources/sql | sort) =(svn ls $(SVN_ROOT)/sofn-server/sofn-$*-service/src/main/resources/sql@{$$(command jq -r '.sqls.$*."last-fetch-date"' schema.json)} | sort)));
 	rm -rf schema-updates/$*; 
 	svn co --depth empty $(SVN_ROOT)/sofn-server/sofn-$*-service/src/main/resources/sql schema-updates/$*;
-	eval svn update schema-updates/$*/{$${(j:,:)files}}
+	#eval svn update schema-updates/$*/{$${(j:,:)files}}
+	svn update schema-updates/$*/$$files
 	eval cat schema-updates/$*/*(.on) >$@
 	jj -p -i schema.json -o schema.json -v $(shell date +%F) sqls.$*.last-fetch-date
 
