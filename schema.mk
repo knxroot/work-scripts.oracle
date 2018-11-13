@@ -10,7 +10,9 @@ init:
 
 .ONESHELL:
 %-upgrade.sql:
-	files=($$(comm -23 =(svn ls $(SVN_ROOT)/sofn-server/sofn-$*-service/src/main/resources/sql | sort) =(svn ls $(SVN_ROOT)/sofn-server/sofn-$*-service/src/main/resources/sql@{$$(command jq -r '.sqls.$*."last-fetch-date"' schema.json)} | sort)));
+	prjs=(ads sofn-ads-service asms sofn-asms-service ales sofn-ales-service tts sofn-tts-service-branch)
+	prj=$${prjs[$*]}
+	files=($$(comm -23 =(svn ls $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql | sort) =(svn ls $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql@{$$(command jq -r '.sqls.$*."last-fetch-date"' schema.json)} | sort)));
 	rm -rf schema-updates/$*; 
 	svn co --depth empty $(SVN_ROOT)/sofn-server/sofn-$*-service/src/main/resources/sql schema-updates/$*;
 	#eval svn update schema-updates/$*/{$${(j:,:)files}}
