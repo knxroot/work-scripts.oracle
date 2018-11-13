@@ -1,5 +1,5 @@
 SHELL:=/usr/bin/zsh
-SQLFILES:=asms-upgrade.sql ales-upgrade.sql ads-upgrade.sql tts-upgrade.sql dgap-upgrade.sql
+SQLFILES:=asms-upgrade.sql ales-upgrade.sql ads-upgrade.sql tts-upgrade.sql# dgap-upgrade.sql
 OUTPUTSQL:=schema-update.sql
 SVN_ROOT:=https://192.168.21.251/svn/CodeRepository/GuoJiaZhuiSuPingTai/BusinessSystem
 
@@ -10,11 +10,12 @@ init:
 
 .ONESHELL:
 %-upgrade.sql:
-	prjs=(ads sofn-ads-service asms sofn-asms-service ales sofn-ales-service tts sofn-tts-service-branch)
+	typeset -A prjs=(ads sofn-ads-service asms sofn-asms-service ales sofn-ales-service tts sofn-tts-service-branch)
 	prj=$${prjs[$*]}
-	files=($$(comm -23 =(svn ls $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql | sort) =(svn ls $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql@{$$(command jq -r '.sqls.$*."last-fetch-date"' schema.json)} | sort)));
-	rm -rf schema-updates/$*; 
-	svn co --depth empty $(SVN_ROOT)/sofn-server/sofn-$*-service/src/main/resources/sql schema-updates/$*;
+	#print -l $$prj
+	files=($$(comm -23 =(svn ls $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql | sort) =(svn ls $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql@{$$(command jq -r '.sqls.$*."last-fetch-date"' schema.json)} | sort)))
+	rm -rf schema-updates/$*
+	svn co --depth empty $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql schema-updates/$*
 	#eval svn update schema-updates/$*/{$${(j:,:)files}}
 	svn update schema-updates/$*/$$files
 	eval cat schema-updates/$*/*(.on) >$@
