@@ -1,4 +1,4 @@
 all: import
 
 include dbimport.mk
-include dbuser.mk
+include schema.mk
