@@ -19,7 +19,7 @@ schema-update.sql: bjdbclean/bj7/tts.sql bjdbclean/bj7/ads-upgrade-2018-11-12.sq
 
 updatedb-dev updatedb-local updatedb-test:
 
-updatedb-%:
+updatedb-%: db.json
 	sqlplus64 "$$(command jq -r '.$*.url' db.json)" <schema-update.sql | ts | tee -a updatedb.log
 	jj -p -i schema.json -o schema.json -v $(shell date +%FT%T) $*.last-sync-date
 
