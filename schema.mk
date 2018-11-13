@@ -7,6 +7,7 @@ all: $(SQLFILES) $(OUTPUTSQL)
 
 init:
 	jo -p local="$$(jo -p url="gjzspt_demo2/Oe123qwe###@10.0.52.1:1521/orcl")" dev="$$(jo -p url="gjzspt/12345678@192.168.21.249:1521/gjzs")" test="$$(jo url="gjzspt_demo2/Oe123qwe###@10.0.52.8:1521/orcl")" >db.json
+	jj -p -i schema.json -o schema.json -v "2018-11-11" sync-date
 
 .ONESHELL:
 %-upgrade.sql:
@@ -19,6 +20,7 @@ init:
 	#eval svn update schema-updates/$*/{$${(j:,:)files}}
 	svn update schema-updates/$*/$$files
 	eval cat schema-updates/$*/*(.on) >$@
+	print -n '\n' >>$@
 	jj -p -i schema.json -o schema.json -v $(shell date +%F) sqls.$*.last-fetch-date
 
 #schema-update.sql: bjdbclean/bj7/tts.sql bjdbclean/bj7/ads-upgrade-2018-11-12.sql bjdbclean/bj7/ales.sql bjdbclean/bj7/asms-upgrade-2018-11-12.sql
