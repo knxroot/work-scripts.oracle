@@ -1,5 +1,7 @@
 {
-   "local": null,
+   "local": {
+      "url": "gjzspt_demo2/Oe123qwe###@10.0.52.1:1521/orcl"
+   },
    "dev": {
       "url": "gjzspt/12345678@192.168.21.249:1521/gjzs"
    },

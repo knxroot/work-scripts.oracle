@@ -7,8 +7,6 @@ alter table ads_file modify (FILE_NAME varchar2(1000 char));
 alter table ADS_MONITOR_SAMPLE modify (FILE_NAME varchar2(1000 char));
 alter table ALES_DAILY_ENFORCE_LAW modify (SCENE_PICTURE_NAMES varchar2(512 char));
 
-alter table ALES_DAILY_ENFORCE_LAW modify (ATTACHMENT_NAMES varchar2(512 char));
-
 alter table ALES_TASK_SAMPLE modify (ATTACHMENT_NAMES varchar2(512 char));
 
 alter table ALES_PRODUCE_ADMIN_PUNISH modify (PUNISH_FILES_NAME varchar2(512 char));

@@ -6,3 +6,4 @@ dmpfiles/
 derby.log
 metastore_db/
 schema.json
+updatedb.log
