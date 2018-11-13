@@ -23,3 +23,4 @@ import fab_testdb as testdb
 import fab_dataguard_161 as dg161
 import fab_dataguard_163 as dg163
 
+import fab_jinji as jinji

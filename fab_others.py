@@ -15,30 +15,6 @@ import oraadmin as admin
 import oradg as dg
 import sqls as sqls
 
-################################################################################
-'''
-def verify_weiq():
-    db_weiq._exec(sqls._create_user('jcfx','12345678'))
-    db_weiq_jcfx._exec("select * from dual;")
-'''
-
-################################################################################
-'''
-def verify_rac():
-    db_rac._exec(sqls._create_table_ws_log())
-    db_rac._exec("insert into t_dgap_ws_log(ID,METHOD_NAME,INVOKE_START_DATE) values ('DATA_GUARD_TESTING','data guard test',CURRENT_TIMESTAMP);")
-    db_rac._exec("select * from t_dgap_ws_log;")
-    db_rac._exec(sqls._drop_table("t_dgap_ws_log"))
-
-    db_rac._exec(sqls._dropdb("jcfx"))
-    db_rac._exec(sqls._create_user("jcfx","12345678"))
-    db_rac._exec(sqls._grant_mv_priviliges("jcfx"))
-
-    db_rac_jcfx._exec(sqls._create_table_ws_log())
-    db_rac_jcfx._exec("insert into t_dgap_ws_log(ID,METHOD_NAME,INVOKE_START_DATE) values ('DATA_GUARD_TESTING','data guard test',CURRENT_TIMESTAMP);")
-    db_rac_jcfx._exec("select * from t_dgap_ws_log;")
-    db_rac_jcfx._exec(sqls._drop_table("t_dgap_ws_log"))
-'''
 
 ##############################################################################
 def disasotr_recovery_db_create():
@@ -78,7 +54,7 @@ def _backup2(db_password, schema):
 def demo2_impdb():
     execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.1'])
     execute(admin._createdb,"orcl","gjzspt_demo2","Oe123qwe###",hosts=['10.0.52.1'])
-    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/165.dmp","Y","Y",hosts=['10.0.52.1'])
+    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/20181105_165.dmp","Y","Y",hosts=['10.0.52.1'])
 
 @task
 def demo2_backup():
@@ -99,10 +75,15 @@ def bj_165_impdb():
     execute(admin._createdb,"orcl","gjzspt_bj_165","12345678",hosts=['10.0.52.1'])
     execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_bj_165","/home/helong/TencentFiles/2898132719/FileRecv/gjzspt0118.dmp","Y","Y",hosts=['10.0.52.1'])
 
+@task
+def jcfx2_backup():
+    execute(_exp,"Oe123qwe###","jcfx2","quanwei",hosts=['10.0.52.1'])
+
+@task
 def jcfx2_impdb():
     execute(admin._dropdb_forceful,"orcl","jcfx2",hosts=['10.0.52.1'])
     execute(admin._createdb,"orcl","jcfx2","12345678",hosts=['10.0.52.1'])
-    execute(admin._imp_with_localfile,"oracle","jcfx","jcfx2","/home/helong/TencentFiles/2898132719/FileRecv/jcfx20171117.dmp","Y","Y",hosts=['10.0.52.1'])
+    execute(admin._imp_with_localfile,"oracle","sg_fxjc","jcfx2","/home/helong/TencentFiles/2898132719/FileRecv/sg_fxjc_1022_2.dmp","Y","Y",hosts=['10.0.52.1'])
 
 ##############################################################################
 #yibing db migration

@@ -20,6 +20,10 @@ db_test_sys=Orac("sys","oracle","10.0.52.1","orcl")
 
 ##############################################################################
 @task
+def test_backup():
+    execute(_exp,"Oe123qwe###","gjzspt_demo2","testdb",hosts=['10.0.52.8'])
+
+@task
 def start():
     with settings(warn_only=True):
         execute(admin._startup,"orcl",hosts=["10.0.52.1"])
