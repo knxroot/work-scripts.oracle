@@ -12,8 +12,11 @@ asms.sql:
 dgap.sql:
 	svn cat https://192.168.21.251/svn/CodeRepository/GuoJiaZhuiSuPingTai/BusinessSystem/sofn-server/sofn-dgap-service/src/main/resources/sql/dgap-upgrade.sql >$@
 
-schema-update.sql: $(SQLFILES)
-	cat $(SQLFILES) >$@
+schema-update.sql: bjdbclean/bj7/tts.sql bjdbclean/bj7/ads-upgrade-2018-11-12.sql bjdbclean/bj7/ales.sql bjdbclean/bj7/asms-upgrade-2018-11-12.sql
+	#cat $(SQLFILES) >$@
+	cat $^ >$@
+
+updatedb-dev updatedb-local updatedb-test:
 
 updatedb-%:
 	sqlplus64 "$$(command jq -r '.$*.url' db.json)" <schema-update.sql
