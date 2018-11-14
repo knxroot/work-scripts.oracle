@@ -34,7 +34,7 @@ schema-update.sql: $(SQLFILES)
 updatedb-dev updatedb-local updatedb-test:
 
 updatedb-%: db.json
-	sqlplus64 "$$(command jq -r '.$*.yw.dsn' db.json)" <schema-update.sql | ts | tee -a updatedb.log
+	sqlplus64 -S "$$(command jq -r '.$*.yw.dsn' db.json)" <schema-update.sql | ts | tee -a updatedb.log
 	jj -p -i schema.json -o schema.json -v $(shell date +%F) $*.last-sync-date
 
 checkdb-all: checkdb-local checkdb-dev checkdb-test
@@ -54,7 +54,7 @@ clean:
 #$(call checkdb,profile)
 define checkdb
 	print "**********"checking db "$$(command jq -r '$1' db.json)""**********"
-	sqlplus64 "$$(command jq -r '$1' db.json)" <<<'select * from dual;'
+	sqlplus64 -S "$$(command jq -r '$1' db.json)" <<<'select * from dual;'
 endef
 
 .PHONY: all clean init checkdb-all #checkdb-local checkdb-dev checkdb-test
