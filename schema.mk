@@ -5,9 +5,12 @@ SVN_ROOT:=https://192.168.21.251/svn/CodeRepository/GuoJiaZhuiSuPingTai/Business
 
 all: $(SQLFILES) $(OUTPUTSQL)
 
-init:
-	jo -p local="$$(jo -p url="gjzspt_demo2/Oe123qwe###@10.0.52.1:1521/orcl")" dev="$$(jo -p url="gjzspt/12345678@192.168.21.249:1521/gjzs")" test="$$(jo url="gjzspt_demo2/Oe123qwe###@10.0.52.8:1521/orcl")" >db.json
+init: 
+	#jo -p local="$$(jo -p url="gjzspt_demo2/Oe123qwe###@10.0.52.1:1521/orcl")" dev="$$(jo -p url="gjzspt/12345678@192.168.21.249:1521/gjzs")" test="$$(jo url="gjzspt_demo2/Oe123qwe###@10.0.52.8:1521/orcl")" >db.json
 	jj -p -i schema.json -o schema.json -v "2018-11-11" sync-date
+
+db.json: rdp/ds-all.json
+	cp $< $@
 
 .ONESHELL:
 %-upgrade.sql:
@@ -31,11 +34,27 @@ schema-update.sql: $(SQLFILES)
 updatedb-dev updatedb-local updatedb-test:
 
 updatedb-%: db.json
-	sqlplus64 "$$(command jq -r '.$*.url' db.json)" <schema-update.sql | ts | tee -a updatedb.log
+	sqlplus64 "$$(command jq -r '.$*.yw.dsn' db.json)" <schema-update.sql | ts | tee -a updatedb.log
 	jj -p -i schema.json -o schema.json -v $(shell date +%F) $*.last-sync-date
+
+checkdb-all: checkdb-local checkdb-dev checkdb-test
+	@echo checking
+
+checkdb-%: db.json
+	@echo checking $*
+	$(call checkdb,.$*.yw.dsn)
+	$(call checkdb,.$*.pre.dsn)
+	$(call checkdb,.$*.dw.dsn)
 
 clean:
 	rm $(SQLFILES)
 	rm -rf schema-updates
+	rm db.json
 
-.PHONY: all clean init
+#$(call checkdb,profile)
+define checkdb
+	print "**********"checking db "$$(command jq -r '$1' db.json)""**********"
+	sqlplus64 "$$(command jq -r '$1' db.json)" <<<'select * from dual;'
+endef
+
+.PHONY: all clean init checkdb-all #checkdb-local checkdb-dev checkdb-test
