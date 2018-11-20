@@ -47,11 +47,11 @@
    },
    "test": {
       "yw": {
-         "user": "gjzspt_demo2_dev",
-         "password": 12345678,
+         "user": "gjzspt_demo2",
+         "password": "Oe123qwe###",
          "ip": "10.0.52.8",
          "service": "orcl",
-         "dsn": "gjzspt_demo2_dev/12345678@10.0.52.8:1521/orcl"
+         "dsn": "gjzspt_demo2/Oe123qwe###@10.0.52.8:1521/orcl"
       },
       "pre": {
          "user": "dgap_pre",
