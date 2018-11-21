@@ -19,7 +19,8 @@ db.json: rdp/ds-all.json
 	files=($$(comm -23 =(svn ls $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql | sort) =(svn ls $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql@{$$(command jq -r '.sqls.$*."last-fetch-date"' schema.json)} | sort)))
 	rm -rf schema-updates/$*
 	svn co --depth empty $(SVN_ROOT)/sofn-server/$$prj/src/main/resources/sql schema-updates/$*
-	[[ -n $$files ]] && svn update schema-updates/$*/$$files
+	[[ -n $$files ]] && pushd schema-updates/$*; svn update $$files; popd
+	[[ -n $$files ]] && for f in $$files; do print -n '\n' >>schema-updates/$*/$$f; done
 	[[ -n $$files ]] && eval cat schema-updates/$*/*(.on) >$@
 	print -n '\n' >>$@
 	jj -p -i schema.json -o schema.json -v $(shell date +%F) sqls.$*.last-fetch-date
