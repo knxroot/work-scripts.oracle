@@ -15,10 +15,11 @@ local clean_orphan_users(orgtypes)={
         AND SYS_USER.ORGANIZATION_ID = SYS_ORGANIZATION.ID 
         AND SYS_ORGANIZATION.ORG_TYPE IN (%s)
         );
-||| % orgtypes
+||| % ("'" + std.join("','",orgtypes) + "'")
 };
 
 {
-    clean_orphan_asms_users: clean_orphan_users('ASMS'),
-    clean_orphan_ales_users: clean_orphan_users('ALES'),
+    clean_asms_orphan_users: clean_orphan_users(['ASMS']),
+    clean_ales_orphan_users: clean_orphan_users(['ALES']),
+    clean_all_orphan_users: clean_orphan_users(['ASMS','ALES','ADS']),
 }
