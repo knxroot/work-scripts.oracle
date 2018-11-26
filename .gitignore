@@ -7,3 +7,12 @@ derby.log
 metastore_db/
 schema.json
 updatedb.log
+ads-upgrade.sql
+ales-upgrade.sql
+asms-upgrade.sql
+bj2test.xml
+schema-update.sql
+schema-updates/
+test2bj.xml
+tts-upgrade.sql
+
