@@ -1,9 +1,5 @@
-{% macro to_in_expr(name) -%}
-	{{ "'" ~ ( name | join("','") if name is not string else name) ~ "'" }}
-{%- endmacro %}
-
-{% if clean_orphan_users %}
-UPDATE SYS_USER 
+m4_changequote(`[',`]')
+m4_define([clean_orphan_user],[UPDATE SYS_USER 
 SET DEL_FLAG = 'Y' 
 WHERE
 	ID IN (
@@ -16,6 +12,7 @@ FROM
 WHERE
 	ASMS_SUBJ_SUPERVISE.ID IS NULL 
 	AND SYS_USER.ORGANIZATION_ID = SYS_ORGANIZATION.ID 
-	AND SYS_ORGANIZATION.ORG_TYPE IN ({{to_in_expr(clean_orphan_users.orgtype)}})
-	);
-{% endif %}
+	AND SYS_ORGANIZATION.ORG_TYPE IN ($1)
+	);])
+dnl start to call macros
+clean_orphan_user([asms])
