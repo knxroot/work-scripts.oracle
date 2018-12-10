@@ -72,4 +72,12 @@
             );
         ||| % self
     },
+
+    clean_asms_sv_change(sv_names):: {
+        in_expr :: "'" + std.join("','",sv_names) + "'",
+        sql: |||
+            -- 监管机构变更记录：
+            DELETE  FROM ASMS_SUBJ_SV_CHANGE WHERE SV_NAME IN (%(in_expr)s);
+        ||| % self,
+    }
 }
