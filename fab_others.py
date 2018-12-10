@@ -57,6 +57,12 @@ def demo2_impdb():
     execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/20181210-165.dmp","Y","Y",hosts=['10.0.52.1'])
 
 @task
+def demo2_test_impdb():
+    #execute(admin._dropdb_forceful,"orcl","gjzspt_demo2_test",hosts=['10.0.52.1'])
+    execute(admin._createdb,"orcl","gjzspt_demo2_test","12345678",hosts=['10.0.52.1'])
+    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2_test","/home/helong/TencentFiles/2898132719/FileRecv/20181210-70.dmp","Y","Y",hosts=['10.0.52.1'])
+
+@task
 def demo2_backup():
     execute(_exp,"Oe123qwe###","gjzspt_demo2","dev",hosts=['10.0.52.1'])
 

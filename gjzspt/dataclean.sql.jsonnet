@@ -2,8 +2,6 @@ local asms=import 'data_alter/asms.libsonnet';
 local ales=import 'data_alter/ales.libsonnet';
 local tts=import 'data_alter/tts.libsonnet';
 local sys=import 'data_alter/sys.libsonnet';
-local qsys=import 'queries/sys.libsonnet';
-local qtts=import 'queries/tts.libsonnet';
 
 {
     /*
@@ -28,5 +26,6 @@ local qtts=import 'queries/tts.libsonnet';
     "20181206_clean_tts_user.sql" : tts.delete_all_data_by_accounts(['taishanshihaoyexiehui']).sql,
     */
 
-    "20181210_clean_tts_user.sql" : tts.delete_all_data_by_accounts(['yunhongjituan']).sql+ sys.delete_user_by_accounts(['yunhongjituan']).sql, 
+    "20181210_clean_tts_user.sql" : tts.delete_all_data_by_accounts(['yunhongjituan']).sql
+                                        + sys.delete_user_by_accounts(['yunhongjituan']).sql, 
 }
