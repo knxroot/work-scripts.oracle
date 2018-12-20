@@ -2,6 +2,7 @@ local asms=import 'data_alter/asms.libsonnet';
 local ales=import 'data_alter/ales.libsonnet';
 local tts=import 'data_alter/tts.libsonnet';
 local sys=import 'data_alter/sys.libsonnet';
+local ads=import 'data_alter/ads.libsonnet';
 
 {
     /*
@@ -26,6 +27,26 @@ local sys=import 'data_alter/sys.libsonnet';
     "20181206_clean_tts_user.sql" : tts.delete_all_data_by_accounts(['taishanshihaoyexiehui']).sql,
     */
 
+    /*
     "20181210_clean_tts_user.sql" : tts.delete_all_data_by_accounts(['yunhongjituan']).sql
                                         + sys.delete_user_by_accounts(['yunhongjituan']).sql, 
+    "20181210_ads_org_rename.sql" : ads.update_by_name('普洱市农业环境保护监测站','new_name').sql,
+    */
+
+    /*
+    "20181217_clean_xinjiang_account.sql": asms.clean_all_data_by_account(['新疆兵团农业局']).sql,
+    "20181217_clean_chongqing_account.sql": asms.clean_all_data_by_account(['潼南区农业委员会']).sql,
+    */
+
+    "20181220_chongqing_sys_region.sql": std.join('',
+        [
+         sys.update_region_code(region_code,std.strReplace(region_code,"5002","5001")).sql
+         for region_code in std.setDiff(
+             std.set([std.toString(x) for x in std.range(500228,500243)]),
+             std.set(["500239"])
+             )   
+         ]+
+        [sys.update_county_to_region("梁平县","梁平区","500155","500100").sql] +
+        [sys.update_county_to_region("武隆县","武隆区","500156","500100").sql] 
+    ),
 }

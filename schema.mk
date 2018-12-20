@@ -1,6 +1,8 @@
 SHELL:=/usr/bin/zsh
 SQLFILES:=asms-upgrade.sql ales-upgrade.sql ads-upgrade.sql tts-upgrade.sql# dgap-upgrade.sql
 OUTPUTSQL:=schema-update.sql
+#LIQUIBASE_DIFF_OUTPUT:=dev2test.xml test2dev.xml #bj2test.xml test2bj.xml
+LIQUIBASE_DIFF_OUTPUT:=bj2test.xml test2bj.xml
 SVN_ROOT:=https://192.168.21.251/svn/CodeRepository/GuoJiaZhuiSuPingTai/BusinessSystem
 
 all: $(SQLFILES) $(OUTPUTSQL)
@@ -44,7 +46,7 @@ checkdb-%: db.json
 	$(call checkdb,.$*.dw.dsn)
 
 
-db-diff: bj2test.xml test2bj.xml
+db-diff: $(LIQUIBASE_DIFF_OUTPUT)
 
 bj2test.xml:
 	liquibase --changeLogFile=$@ --classpath="$$(mvn_artifact_classpath -g oracle.ojdbc -a ojdbc:6)" --driver=oracle.jdbc.driver.OracleDriver --url=jdbc:oracle:thin:@10.0.52.1:1521:orcl --username=gjzspt_demo2 --password='Oe123qwe###' diffChangeLog --referenceUrl=jdbc:oracle:thin:@10.0.52.8:1521/orcl --referenceUsername=gjzspt_demo2 --referencePassword="Oe123qwe###"
@@ -52,13 +54,19 @@ bj2test.xml:
 test2bj.xml:
 	liquibase --changeLogFile=$@ --classpath="$$(mvn_artifact_classpath -g oracle.ojdbc -a ojdbc:6)" --driver=oracle.jdbc.driver.OracleDriver --url=jdbc:oracle:thin:@10.0.52.8:1521:orcl --username=gjzspt_demo2 --password='Oe123qwe###' diffChangeLog --referenceUrl=jdbc:oracle:thin:@10.0.52.1:1521/orcl --referenceUsername=gjzspt_demo2 --referencePassword="Oe123qwe###"
 
+dev2test.xml:
+	liquibase --changeLogFile=$@ --classpath="$$(mvn_artifact_classpath -g oracle.ojdbc -a ojdbc:6)" --driver=oracle.jdbc.driver.OracleDriver --url=jdbc:oracle:thin:@192.168.21.249:1521:gjzs --username=gjzspt --password='12345678' diffChangeLog --referenceUrl=jdbc:oracle:thin:@10.0.52.8:1521/orcl --referenceUsername=gjzspt_demo2 --referencePassword="Oe123qwe###"
+
+test2dev.xml:
+	liquibase --changeLogFile=$@ --classpath="$$(mvn_artifact_classpath -g oracle.ojdbc -a ojdbc:6)" --driver=oracle.jdbc.driver.OracleDriver --url=jdbc:oracle:thin:@10.0.52.8:1521:orcl --username=gjzspt_demo2 --password='Oe123qwe###' diffChangeLog --referenceUrl=jdbc:oracle:thin:@192.168.21.249:1521/gjzs --referenceUsername=gjzspt --referencePassword="12345678"
+
 clean:
 	rm $(SQLFILES)
 	rm schema-update.sql
 	rm -rf schema-updates
 
 clean-diff:
-	rm test2bj.xml bj2test.xml
+	rm $(LIQUIBASE_DIFF_OUTPUT)
 
 #$(call checkdb,profile)
 define checkdb

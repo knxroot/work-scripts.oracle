@@ -1,0 +1,14 @@
+{
+    "plsql-language.connections": [
+        {
+            "ID": 2,
+            "active": true,
+            "database": "10.0.52.1:1521/orcl",
+            "password": "Oe123qwe###",
+            "schema": "gjzspt_demo2",
+            "username": "gjzspt_demo2",
+            "name": "gjzspt_demo2@10.0.52.1:1521/orcl"
+        }
+    ],
+    "plsql-language.connection.activeInfos": "gjzspt_demo2/Oe123qwe###@10.0.52.1:1521/orcl"
+}

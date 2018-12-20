@@ -21,4 +21,14 @@
             S.ACCOUNT in (%(in_expr)s);        
         ||| % self
     },
+    update_region_code(region_code, new_region_code):: {
+        sql: |||
+            update sys_region set region_code='%(new_region_code)s' where region_code = '%(region_code)s';
+        ||| % {region_code: region_code, new_region_code: new_region_code},
+    },
+    update_county_to_region(county_name, region_name,new_region_code, parentid):: {
+        sql: |||
+            update sys_region set region_name='%(region_name)s',region_code='%(new_region_code)s',parent_id='%(parentid)s' where region_name = '%(county_name)s';
+        ||| % {county_name: county_name, region_name: region_name, new_region_code: new_region_code, parentid: parentid},
+    },
 }

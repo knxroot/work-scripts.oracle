@@ -1,4 +1,11 @@
 {
+    delete_all_data_by_orgname(org_names)::{
+        in_expr :: "'" + std.join("','",org_names) + "'",
+        sql: |||
+
+        ||| % self,
+    },
+
     delete_all_data_by_userids(user_ids):: {
         in_expr :: "'" + std.join("','",user_ids) + "'",
         sql: |||
@@ -73,6 +80,6 @@
                     FROM
                         SYS_ORGANIZATION
                 ) AND  S.ID in (%(in_expr)s);
-        ||| % self
+        ||| % self,
     },
 }
