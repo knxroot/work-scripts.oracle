@@ -74,22 +74,95 @@ local trans_wrap(sqls)=|||
     "20181225_jingshanshi_sys_region.sql": 
         sys.update_county_to_region("京山县","京山市","420882",null).sql,
 
-    "20181227_shengji_asms_add_roles.sql":
-        asms.add_role('JG-410000-001','监管机构管理员渔业角色','渔业').sql +
-        asms.add_role('JG-320000-002','监管机构管理员畜牧业角色','畜牧业').sql,
-    
-    "20181227_guangdong_shixian_asms_add_roles.sql":
-        asms.add_role('JG-440100-007','监管机构管理员渔业角色','渔业').sql+
-        asms.add_role('JG-440704-001','监管机构管理员渔业角色','渔业').sql+
-        asms.add_role('JG-440783-001','监管机构管理员渔业角色','渔业').sql+
-        asms.add_role('JG-440785-002','监管机构管理员渔业角色','渔业').sql+
-        asms.add_role('JG-441400-001','监管机构管理员渔业角色','渔业').sql+
+    local shengji=[
+        {
+            account: 'JG-410000-001',
+            role_name: '监管机构管理员渔业角色',
+            industry_name: '渔业',
+        },
+        {
+            account: 'JG-320000-002',
+            role_name: '监管机构管理员畜牧业角色',
+            industry_name: '畜牧业',
+        },
+    ],
 
-        asms.add_role('JG-440704-001','监管机构管理员畜牧业角色','畜牧业').sql+
-        asms.add_role('JG-440705-001','监管机构管理员畜牧业角色','畜牧业').sql+
-        asms.add_role('JG-440781-001','监管机构管理员畜牧业角色','畜牧业').sql+
-        asms.add_role('JG-440783-001','监管机构管理员畜牧业角色','畜牧业').sql+
-        asms.add_role('JG-440784-001','监管机构管理员畜牧业角色','畜牧业').sql,
+    // local guangdong_shengshi={
+    //     '监管机构管理员渔业角色': {
+    //         accounts:[
+    //         'JG-440100-007',
+    //         'JG-440704-001',
+    //         'JG-440783-001',
+    //         'JG-440785-002',
+    //         'JG-441400-001',
+    //         ],
+    //         industry: "渔业",
+    //     },
+    //     '监管机构管理员畜牧业角色': {
+    //         accounts: [
+    //         'JG-440704-001',
+    //         'JG-440705-001',
+    //         'JG-440781-001',
+    //         'JG-440783-001',
+    //         'JG-440784-001',
+    //         ],
+    //         industry: "畜牧业",
+    //     },
+    // },
+
+    // "20181227_shengji_asms_add_roles.sql":
+    //     asms.add_role('JG-410000-001','监管机构管理员渔业角色','渔业').sql +
+    //     asms.add_role('JG-320000-002','监管机构管理员畜牧业角色','畜牧业').sql,
+    "20181227_shengji_asms_add_roles.sql":
+        std.join('',
+            [
+                asms.add_role(d.account,d.role_name,d.industry_name).sql
+                for d in shengji
+            ]
+        )
+    
+    // "20181227_guangdong_shixian_asms_add_roles.sql":
+    //     asms.add_role('JG-440100-007','监管机构管理员渔业角色','渔业').sql+
+    //     asms.add_role('JG-440704-001','监管机构管理员渔业角色','渔业').sql+
+    //     asms.add_role('JG-440783-001','监管机构管理员渔业角色','渔业').sql+
+    //     asms.add_role('JG-440785-002','监管机构管理员渔业角色','渔业').sql+
+    //     asms.add_role('JG-441400-001','监管机构管理员渔业角色','渔业').sql+
+
+    //     asms.add_role('JG-440704-001','监管机构管理员畜牧业角色','畜牧业').sql+
+    //     asms.add_role('JG-440705-001','监管机构管理员畜牧业角色','畜牧业').sql+
+    //     asms.add_role('JG-440781-001','监管机构管理员畜牧业角色','畜牧业').sql+
+    //     asms.add_role('JG-440783-001','监管机构管理员畜牧业角色','畜牧业').sql+
+    //     asms.add_role('JG-440784-001','监管机构管理员畜牧业角色','畜牧业').sql,
+    local guangdong_shengshi={
+        local yuye_accounts=[
+            'JG-440100-007',
+            'JG-440704-001',
+            'JG-440783-001',
+            'JG-440785-002',
+            'JG-441400-001',
+            ],
+        local xumu_accounts=[
+            'JG-440704-001',
+            'JG-440705-001',
+            'JG-440781-001',
+            'JG-440783-001',
+            'JG-440784-001',
+        ],
+        data:[
+            {
+                account: acc, 
+                role_name: if std.setMember(acc,yuye_accounts) then '监管机构管理员渔业角色' else if std.setMember(acc,xumu_accounts) then '监管机构管理员畜牧业角色', 
+                industry_name: if std.setMember(acc,yuye_accounts) then '渔业' else if std.setMember(acc,xumu_accounts) then '畜牧业', 
+            } for acc in yuye_accounts + xumu_accounts
+        ],
+    },
+    "20181227_guangdong_shixian_asms_add_roles.sql":
+        std.join('',
+            [
+                asms.add_role(d.account,d.role_name,d.industry_name).sql
+                for d in guangdong_shengshi.data
+            ]
+        ),
 
     "20181227_xinjiang_bingtuanzongbu_data.sql":
         trans_wrap(
@@ -97,7 +170,7 @@ local trans_wrap(sqls)=|||
             sys.add_region('兵团总部','兵团总部','661501').sql
         ),          
     */
-
+    
     local beijing_test_data = {
         sv_names: ["海淀区监管","北京县级监管机构一测试","北京市级监管机构一测试","北京省级监管机构一测试"],
         ales_user_accounts: ['ZF-110100-003','ZF-110101-003','ZF-110000-010','test|_sjzf2','test_sjzf','test_xjzf'],
@@ -116,6 +189,4 @@ local trans_wrap(sqls)=|||
             ads.delete_by_area_prefix(beijing_test_data.bj_area_prefix).sql
         ),
       
-    // "query_20181227_beijing_test_data.sql":
-    //     alesq.query_data_by_accounts(input.beijing_test_data.ales_user_accounts).sql,
 }
