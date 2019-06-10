@@ -25,5 +25,37 @@
             WHERE
                 t1.dt_name like '%(account)s' or t3.USER_NAME like '%(account)s' or t2.ORG_NAME like  '%(account)s';        
         ||| % self,
-    }
+    },
+
+    query_task_by_name(task_name):: {
+        task_name:: task_name,
+        sql: |||
+            SELECT *
+            FROM ADS_MONITOR_TASK
+            WHERE task_name = '关于做好2019年农产品质量安全市级例行监测（风险监测）工作的通知';
+
+            SELECT *
+            FROM ADS_ORGAN_TASK ot,
+            ADS_MONITOR_TASK mt
+            WHERE ot.MONITOR_TASK_ID = mt.id
+            AND mt.task_name         = '关于做好2019年农产品质量安全市级例行监测（风险监测）工作的通知';
+
+
+            select *
+            FROM ADS_ORGAN_TASK ot,
+            ADS_RECIPE ar,
+            ADS_MONITOR_TASK mt
+            WHERE ar.ORGAN_TASK_ID = ot.id
+            and ot.MONITOR_TASK_ID = mt.id
+            AND mt.task_name         = '关于做好2019年农产品质量安全市级例行监测（风险监测）工作的通知';
+
+            select *
+            FROM ADS_FILE af,
+            ADS_ORGAN_TASK ot,
+            ADS_MONITOR_TASK mt
+            WHERE af.ORGAN_TASK_ID = ot.id
+            and af.MONITOR_TASK_ID = mt.id
+            AND mt.task_name         = '关于做好2019年农产品质量安全市级例行监测（风险监测）工作的通知';
+        ||| % self,
+    },
 }

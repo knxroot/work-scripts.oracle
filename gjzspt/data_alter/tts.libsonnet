@@ -293,11 +293,23 @@
         ||| % self
     },
 
-    delete_all_data_by_entnames(entnames)::{
-        in_expr :: "'" + std.join("','",entnames) + "'",
+    update_by_account(account,scale_name):: {
         sql: |||
-            
-        ||| % self,        
+            UPDATE TTS_SCLTXXCJ_REGISTER_V2
+            SET ENTITY_SCALE_NAME = '%(scale_name)s'
+            WHERE
+                ACCOUNT = '%(account)s'        
+        ||| % { account: account, scale_name: scale_name }
+    },
 
-    },    
+    delete_complaints(complaint_title, complaint_cop_name, account_name):: |||
+        DELETE FROM (
+            SELECT *
+            FROM TTS_SCLTXXCJ_COMPLAINT_V2
+            WHERE COMPLAINT_TITLE='%(complaint_title)s'
+            AND COMPLAINT_COP_NAME='%(complaint_cop_name)s'
+            AND ENTITY_IDCODE=(
+                SELECT ENTITY_IDCODE FROM TTS_SCLTXXCJ_REGISTER_V2 where account='%(account_name)s')
+         );
+    ||| % {complaint_title: complaint_title, complaint_cop_name: complaint_cop_name, account_name: account_name},
 }

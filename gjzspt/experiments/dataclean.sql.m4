@@ -1,5 +1,4 @@
-m4_changequote(`[',`]')
-m4_define([clean_orphan_user],[UPDATE SYS_USER 
+m4_define(clean_orphan_user,`UPDATE SYS_USER 
 SET DEL_FLAG = 'Y' 
 WHERE
 	ID IN (
@@ -13,6 +12,6 @@ WHERE
 	ASMS_SUBJ_SUPERVISE.ID IS NULL 
 	AND SYS_USER.ORGANIZATION_ID = SYS_ORGANIZATION.ID 
 	AND SYS_ORGANIZATION.ORG_TYPE IN ($1)
-	);])
+	);')dnl
 dnl start to call macros
-clean_orphan_user([asms])
+clean_orphan_user(`asms')

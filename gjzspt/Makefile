@@ -2,7 +2,7 @@ SHELL:=/usr/bin/zsh
 
 all:
 
-gen:
+gen: dataclean.sql.jsonnet
 	jsonnet -m gen -S dataclean.sql.jsonnet
 
 clean:

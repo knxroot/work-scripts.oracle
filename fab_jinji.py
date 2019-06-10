@@ -29,17 +29,17 @@ def daoshuju_impdb():
 
 @task
 def daoshuju_impdb2():
-    execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.1'])
-    execute(admin._createdb,"orcl","gjzspt_demo2","Oe123qwe###",hosts=['10.0.52.1'])
-    execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/20181205-165.dmp","Y","Y",hosts=['10.0.52.1'])
+    #execute(admin._dropdb_forceful,"orcl","gjzspt_demo2",hosts=['10.0.52.1'])
+    #execute(admin._createdb,"orcl","gjzspt_demo2","Oe123qwe###",hosts=['10.0.52.1'])
+    #execute(admin._imp_with_localfile,"oracle","gjzspt","gjzspt_demo2","/home/helong/TencentFiles/2898132719/FileRecv/20181205-165.dmp","Y","Y",hosts=['10.0.52.1'])
 
     execute(admin._dropdb_forceful,"orcl","dgap_pre",hosts=['10.0.52.8'])
     execute(admin._createdb,"orcl","dgap_pre","12345678",hosts=['10.0.52.8'])
-    execute(admin._imp_with_localfile,"oracle","dgap_pre","dgap_pre","/home/helong/TencentFiles/2898132719/FileRecv/20181205-175-pre.dmp","Y","Y",hosts=['10.0.52.8'])
+    execute(admin._imp_with_localfile,"oracle","dgap_pre","dgap_pre","/home/helong/TencentFiles/2898132719/FileRecv/201901_175-pre.dmp","Y","Y",hosts=['10.0.52.8'])
 
     execute(admin._dropdb_forceful,"orcl","dgap_dw",hosts=['10.0.52.8'])
     execute(admin._createdb,"orcl","dgap_dw","12345678",hosts=['10.0.52.8'])
-    execute(admin._imp_with_localfile,"oracle","dgap_dw","dgap_dw","/home/helong/TencentFiles/2898132719/FileRecv/20181205-175-dw.dmp","Y","Y",hosts=['10.0.52.8'])
+    execute(admin._imp_with_localfile,"oracle","dgap_dw","dgap_dw","/home/helong/TencentFiles/2898132719/FileRecv/2019015_175-dw.dmp","Y","Y",hosts=['10.0.52.8'])
 
 @task
 def daoshuju_import_pre_step2():

@@ -46,12 +46,13 @@ def _exp(db_password,schema_name,dbname):
 def _backup():
     c.remoteFile = admin._backup("oracle","gjzspt")
 
-def _recreatedb():
-    admin._dropdb_forceful("orcl","gjzspt")
-    admin._createdb("orcl","gjzspt","12345678")
+def _recreatedb(instance_name,schema_name,password):
+    admin._dropdb_forceful(instance_name,schema_name)
+    admin._createdb(instance_name,schema_name,password)
 
-def _imp():
-    admin._imp_with_localfile("Oe123qwe###","gjzspt","gjzspt",c.localFile,'N','N')
+def _imp(db_password,from_schema,to_schema,withdata,onlydata):
+    admin._imp_with_localfile(db_password,from_schema,to_schema,c.localFile,withdata,onlydata)
+    #admin._imp_with_localfile("Oe123qwe###","gjzspt","gjzspt",c.localFile,'N','N')
     #admin._imp_with_localfile("oracle","gjzspt","gjzspt",c.localFile,'N','N')
     #admin._imp_with_remotefile("oracle","gjzspt","gjzspt",c.remoteFile,'Y','Y')
 

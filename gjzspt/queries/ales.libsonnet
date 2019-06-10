@@ -98,5 +98,15 @@
                         S.ACCOUNT in (%(in_expr)s) 
                     );
         ||| % self,
-    }
+    },
+
+    query_by_el_name(el_name):: {
+        sql: |||
+  SELECT * 
+    FROM
+            ASMS_SUBJ_ENFORCE_LAW t1
+    WHERE
+        t1.el_name in ('%s');
+||| % el_name,
+    },
 }

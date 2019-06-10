@@ -42,4 +42,20 @@
         ||| % {region_name: region_name, p_name: p_region_name, region_code: region_code},
     },
 
+    delete_accounts_with_same_loginname():: |||
+      UPDATE sys_user
+      SET del_flag   ='Y'
+      WHERE account IN
+      (SELECT u.account
+      FROM sys_user u
+      WHERE u.del_flag= 'N'
+      GROUP BY u.account
+      HAVING COUNT(*)>1
+      );
+    |||,    
+
+    reset_user_initial_password(account, new_pass):: |||
+      update sys_user set reserved_field2 = '%(password)s' where account='%(account)s' and del_flag='N';
+    ||| % {account: account, password: new_pass},
+
 }

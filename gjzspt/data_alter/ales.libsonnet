@@ -297,4 +297,11 @@
                 ) AND  S.ID in (%(in_expr)s);
         ||| % self,
     },
+
+    delete_dummy_org(org_name):: {
+        sql: |||
+            DELETE FROM ASMS_SUBJ_ENFORCE_LAW WHERE ASMS_SUBJ_ENFORCE_LAW.EL_NAME = '%(org_name)s';
+            DELETE FROM SYS_ORGANIZATION WHERE SYS_ORGANIZATION.ORG_NAME = '%(org_name)s';
+        ||| % {org_name: org_name },
+    },
 }

@@ -38,6 +38,12 @@ def restore():
     execute(_restore_db,"Oe123qwe###","gjzspt","gjzspt","./dmpfiles/dev_gjzspt_20170309_wd.dmp",hosts=['192.168.21.249'])
 
 @task
+def syncdb():
+    execute(_exp,"Oe123qwe###","gjzspt_demo2","test",hosts=['10.0.52.8'])
+    execute(_recreatedb,"gjzs","gjzspt","12345678",hosts=['192.168.21.249'])
+    execute(_imp,"Oe123qwe###","gjzspt_demo2","gjzspt","Y","N",hosts=['192.168.21.249'])
+
+@task
 def restart():
     execute(admin._restart,"gjzs",hosts=['192.168.21.249'])
 

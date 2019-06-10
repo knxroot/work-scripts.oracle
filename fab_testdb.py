@@ -21,7 +21,8 @@ db_test_sys=Orac("sys","oracle","10.0.52.1","orcl")
 ##############################################################################
 @task
 def test_backup():
-    execute(_exp,"Oe123qwe###","gjzspt_demo2","testdb",hosts=['10.0.52.8'])
+    #execute(_exp,"Oe123qwe###","gjzspt_demo2","testdb",hosts=['10.0.52.8'])
+    execute(_exp,"Oe123qwe###","gjzspt_demo2","testdb",hosts=['10.0.52.9'])
 
 @task
 def start():
@@ -40,6 +41,16 @@ def syncdb():
     execute(_backup,hosts=['10.0.52.1'])
     execute(_recreatedb,hosts=['10.0.52.1'])
     execute(_imp,hosts=['10.0.52.1'])
+
+@task
+def migto529():
+    execute(_recreatedb,"orcl","gjzspt_demo2","Oe123qwe###2019",hosts=['10.0.52.9'])
+    execute(admin._imp_with_localfile,"Oe123qwe###","gjzspt_demo2","gjzspt_demo2","dmpfiles/testdb_gjzspt_demo2_20190305_wd.dmp",'Y','N',hosts=['10.0.52.9'])
+
+@task
+def migto527():
+    execute(_recreatedb,"orcl","gjzspt_demo2","12345678",hosts=['10.0.52.7'])
+    execute(admin._imp_with_localfile,"Oe123qwe###","gjzspt_demo2","gjzspt_demo2","dmpfiles/testdb_gjzspt_demo2_20190305_wd.dmp",'Y','N',hosts=['10.0.52.7'])
 
 ##############################################################################
 def newdev():
